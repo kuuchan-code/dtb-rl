@@ -1,3 +1,5 @@
-sudo docker run -p 8888:8888 --runtime=nvidia -it tensorflow/tensorflow:latest-gpu-jupyter bash
+sudo docker run -v /home/ikeda/dtb-rl:/tf/dtb-rl -p 8888:8888 --runtime=nvidia -it tensorflow/tensorflow:latest-gpu-jupyter bash
 jupyter notebook --ip=0.0.0.0 --allow-root
 sudo docker exec -it keen_robinson /bin/bash
+
+sudo docker rm `sudo docker ps -a -q`
