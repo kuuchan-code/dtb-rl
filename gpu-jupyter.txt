@@ -1,0 +1,3 @@
+sudo docker run -p 8888:8888 --runtime=nvidia -it tensorflow/tensorflow:latest-gpu-jupyter bash
+jupyter notebook --ip=0.0.0.0 --allow-root
+sudo docker exec -it keen_robinson /bin/bash
