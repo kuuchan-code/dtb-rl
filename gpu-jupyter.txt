@@ -4,3 +4,8 @@ jupyter notebook --ip=0.0.0.0 --allow-root
 sudo docker exec -it 2853c8759298 /bin/bash
 
 sudo docker rm `sudo docker ps -a -q`
+
+anbox
+rlilb
+adb
+
