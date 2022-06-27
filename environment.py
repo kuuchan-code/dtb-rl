@@ -30,7 +30,10 @@ def calc_height(img_gray):
             height += "."
         else:
             height += str(key[1])
-    return float(height)
+    if height != "":
+        return float(height)
+    else:
+        return ""
 
 
 class AnimalTower(gym.Env):
@@ -72,14 +75,18 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         # actionのようにタップする
-        action = self.ACTION_MAP[action_index]
+        self.operations.w3c_actions.pointer_action.move_to_location(496, 954)
+        self.operations.w3c_actions.pointer_action.pointer_down()
+        self.operations.w3c_actions.pointer_action.pause(0.1)
+        self.operations.w3c_actions.pointer_action.release()
+        self.operations.perform()
         self.driver.save_screenshot('test.png')
         img_bgr = cv2.imread("test.png")
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         height = calc_height(img_gray)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
-        if height > self.prev_height:
+        if height and height > self.prev_height:
             reward = 1
             done = False
         elif not(height):
