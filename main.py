@@ -2,6 +2,7 @@
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
+import numpy as np
 from PIL import Image
 import pytesseract
 
@@ -19,6 +20,7 @@ try:
     while True:
         driver.save_screenshot('test.png')
         I = Image.open('test.png')
+        print(np.array(I))
         I = I.convert("L").point(lambda x: 255 if x < 255 else 0, mode="1")
         I = I.crop((0, 50, 500, 450))
         # print(pytesseract.image_to_string(I))
