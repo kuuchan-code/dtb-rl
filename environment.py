@@ -68,8 +68,7 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
         sleep(3)
-        img_bgr = cv2.imread("test.png")
-        img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        img_gray = cv2.imread("test.png", 0)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
         # スタート後の画像を返す
@@ -124,7 +123,7 @@ class AnimalTower(gym.Env):
             reward = 0
             done = False
         self.prev_height = height
-        print(done)
+        # print(done)
         return observation, reward, done, {}
 
     def render(self):

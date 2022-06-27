@@ -15,5 +15,6 @@ for i in range(1):
     env.render()
     if done:
         obs = env.reset()
+    print(f"{i}回目ループ")
 
 env.close()
