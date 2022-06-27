@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import numpy as np
 from appium.webdriver.common.touch_action import TouchAction
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 caps = {}
@@ -15,7 +16,15 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+pritn(driver)
+# actions = TouchAction(driver)
 THRESHOLD = 0.99
+
+actions = ActionChains(driver)
+# actions.move_by_offset(100, 500)
+actions.click()
+actions.perform()
+
 
 try:
     while True:
@@ -42,7 +51,10 @@ try:
             else:
                 height += str(key[1])
         # タップしてみる
-        TouchAction(driver).tap(None, 100, 100, 1).perform()
+        actions.move_by_offset(100, 500)
+        actions.click()
+        actions.perform()
+
         print(height)
         sleep(1)
 
