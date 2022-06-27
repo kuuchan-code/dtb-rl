@@ -1,8 +1,7 @@
 from appium import webdriver
-from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
-from PIL import Image
-import pytesseract
+import cv2
+import numpy as np
 
 
 caps = {}
@@ -17,11 +16,27 @@ driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
 try:
     while True:
         driver.save_screenshot('test.png')
-        I = Image.open('test.png')
-        I = I.convert("L").point(lambda x: 255 if x < 255 else 0, mode="1")
-        I = I.crop((0,50,500,450))
-        # print(pytesseract.image_to_string(I))
-        print(pytesseract.image_to_string(I, lang="jpn", config="digits --psm 6").split()[0])
+        img_rgb = cv2.imread("test.png")
+        img_rgb = img_rgb[65:129, 0:1080, :]
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        dict_digits = {}
+        for i in list(range(10))+["dot"]:
+            template = cv2.imread("digits/"+str(i)+".png",0)
+            w, h = template.shape[::-1]
+            res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
+            threshold = 0.8
+            loc = np.where(res >= threshold)
+            if len(loc[1]) != 0:
+                dict_digits[loc[1].min()] = i
+            for pt in zip(*loc[::-1]):  
+                cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+        height = ""
+        for key in sorted(dict_digits.items()):
+            if key[1] == "dot":
+                height += "."
+            else:
+                height += str(key[1])
+        print(height)
         sleep(1)
 except KeyboardInterrupt:
     driver.quit()

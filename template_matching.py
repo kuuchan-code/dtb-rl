@@ -3,9 +3,9 @@ import numpy as np
 
 img_rgb = cv2.imread("samples/1.38.png")
 img_rgb = img_rgb[65:129, 0:1080, :]
-dict_digits = {}
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
+dict_digits = {}
 for i in list(range(10))+["dot"]:
     template = cv2.imread("digits/"+str(i)+".png",0)
     w, h = template.shape[::-1]
