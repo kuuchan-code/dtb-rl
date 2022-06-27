@@ -3,7 +3,6 @@ from appium import webdriver
 from time import sleep
 import numpy as np
 import cv2
-import numpy as np
 
 
 caps = {}
@@ -27,8 +26,7 @@ try:
             template = cv2.imread("digits/"+str(i)+".png", 0)
             w, h = template.shape[::-1]
             res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-            threshold = 0.99
-            loc = np.where(res >= threshold)
+            loc = np.where(res >= THRESHOLD)
             for y in loc[1]:
                 dict_digits[y] = i
             for pt in zip(*loc[::-1]):
