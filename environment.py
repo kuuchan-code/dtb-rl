@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from appium import webdriver
 import itertools
 import gym
@@ -89,7 +88,6 @@ class AnimalTower(gym.Env):
             print(f"待機中{i}")
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
-        print(action, action_index)
         # 回数分タップ
         for _ in range(int(action[0])):
             self.operations.w3c_actions.pointer_action.move_to_location(
