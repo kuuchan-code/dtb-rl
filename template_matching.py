@@ -3,13 +3,14 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-img_rgb = cv2.imread("samples/1.38.png")
+img_rgb = cv2.imread("samples/1.11.png")
 img_rgb = img_rgb[65:129, 0:1080, :]
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 fig = plt.figure(figsize=(8, 5))
 idx = 1
-threshold = 0.8
+threshold = 0.9
+min_dist = 20
 
 dict_digits = {}
 for i in list(range(10))+["dot"]:
@@ -21,10 +22,13 @@ for i in list(range(10))+["dot"]:
     ax.imshow(res)
     ax.axis("off")
     loc = np.where(res >= threshold)
-    print(len(loc))
-    for j in loc:
-        print(j)
+    # print(len(loc))
+    # for j in loc:
+    #     print(j)
     if len(loc[1]) != 0:
+        s_locs = sorted(loc[1])
+
+        print(s_locs)
         dict_digits[loc[1].min()] = i
     for pt in zip(*loc[::-1]):
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
