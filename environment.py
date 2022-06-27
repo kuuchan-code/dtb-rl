@@ -80,7 +80,7 @@ class AnimalTower(gym.Env):
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=(1920, 1080))  # エージェントが受け取りうる観測空間を定義
+            low=0, high=255, shape=(540, 960))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = -1  # 初期値変更
         caps = {}
@@ -102,26 +102,14 @@ class AnimalTower(gym.Env):
         self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
-        observation = img_gray
+        observation = cv2.resize(img_gray, (960, 540))
         # スタート後の画像を返す
         return observation
 
     def step(self, action_index):
-        for i in range(10):
-            self.operations.perform()
-            self.driver.save_screenshot("test.png")
-            img_gray = cv2.imread("test.png", 0)
-            height = calc_height(img_gray)
-            # 終わり
-            if height is None:
-                if check_record(img_gray):
-                    print("done")
-                    return img_gray, -1, True, {}
-            # 高さ更新
-            elif height > self.prev_height:
-                break
-            sleep(1)
-            print(f"待機中{i}")
+        """
+        1ステップ
+        """
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
         # 回数分タップ
@@ -130,29 +118,34 @@ class AnimalTower(gym.Env):
             # print("回転")
         self._tap(action[1], 800)
 
-        sleep(7)
+        sleep(1)
 
-        self.operations.perform()
-        self.driver.save_screenshot("test.png")
-        img_gray = cv2.imread("test.png", 0)
-        height = calc_height(img_gray)
-        observation = img_gray
-        print(height)
-
-        # デフォルトは偽
-        done = False
         # デフォルトは0
         reward = 0
-        if height is None:
-            if check_record(img_gray):
-                reward = -1
-                done = True
-                print("done")
-        elif height > self.prev_height:
-            self.prev_height = height
-            reward = 1
 
-        return observation, reward, done, {}
+        # 報酬を計算
+        for i in range(10):
+            self.operations.perform()
+            self.driver.save_screenshot("test.png")
+            img_gray = cv2.imread("test.png", 0)
+            observation = cv2.resize(img_gray, (960, 540))
+            height = calc_height(img_gray)
+            print(height, self.prev_height)
+            if height is None:
+                # 落ちた
+                if check_record(img_gray):
+                    print("done")
+                    return observation, -1, True, {}
+            # 高さ更新
+            elif height != self.prev_height:
+                if height > self.prev_height:
+                    reward = 1
+                self.prev_height = height
+                break
+            sleep(1)
+            print(f"更新待機中{i}")
+        # 続行
+        return observation, reward, False, {}
 
     def render(self):
         # プレイ画面を返す？
