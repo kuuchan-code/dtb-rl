@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 
 img_rgb = cv2.imread("9.3.png")
 img_rgb = img_rgb[60:round(280/2), 0:round(600/2), :]
