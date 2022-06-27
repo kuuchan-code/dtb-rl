@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from appium import webdriver
 from time import sleep
 import cv2
