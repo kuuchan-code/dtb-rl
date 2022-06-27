@@ -44,6 +44,7 @@ class AnimalTower(gym.Env):
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(low=0, high=1, shape=(256, 144))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
+        self.prev_height = 0
 
     def reset(self):
         # リスタートボタンをタップ
@@ -65,7 +66,8 @@ class AnimalTower(gym.Env):
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
-        if calc_height(img_gray) > prev_height:
+        height = calc_height(img_gray)
+        if height > self.prev_height:
             reward = 1
             done = False
         # 落としたらreward -1
@@ -76,7 +78,7 @@ class AnimalTower(gym.Env):
         else:
             reward = 0
             done = False
-
+        self.prev_height = height
         return observation, reward, done, {}
 
     def render(self):
