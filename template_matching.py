@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 img_rgb = cv2.imread("samples/1.38.png")
-img_rgb = img_rgb[60:round(280/2), 0:round(600/2), :]
+img_rgb = img_rgb[50:140, 0:280, :]
 dict_digits = {}
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
@@ -14,7 +14,13 @@ for i in list(range(10))+["dot"]:
     loc = np.where(res >= threshold)
     if len(loc[1]) != 0:
         dict_digits[loc[1].min()] = i
-    for pt in zip(*loc[::-1]):
+    for pt in zip(*loc[::-1]):  
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
 cv2.imwrite('res.png',img_rgb)
-print(sorted(dict_digits.items()))
+height = ""
+for key in sorted(dict_digits.items()):
+    if key[1] == "dot":
+        height += "."
+    else:
+        height += str(key[1])
+print(height)
