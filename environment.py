@@ -20,11 +20,12 @@ driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
 
 
 def calc_height(img_gray):
+    img_gray_height = img_gray[65:129, 0:1080, :]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread("digits/"+str(i)+".png", 0)
         w, h = template.shape[::-1]
-        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+        res = cv2.matchTemplate(img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
         for y in loc[1]:
             dict_digits[y] = i
@@ -47,6 +48,7 @@ class AnimalTower(gym.Env):
         self.prev_height = 0
 
     def reset(self):
+        self.prev_height = 0
         # リスタートボタンをタップ
         pass
         driver.save_screenshot('test.png')
@@ -64,9 +66,9 @@ class AnimalTower(gym.Env):
         driver.save_screenshot('test.png')
         img_bgr = cv2.imread("test.png")
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        height = calc_height(img_gray)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
-        height = calc_height(img_gray)
         if height > self.prev_height:
             reward = 1
             done = False
