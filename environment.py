@@ -96,12 +96,12 @@ class AnimalTower(gym.Env):
 
     def reset(self):
         print("リセット!!")
-        # 高さもリセット
-        self.prev_height = -1
         # リスタートボタンをタップ
         self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
+        # 高さもリセット
+        self.prev_height = calc_height(img_gray)
         observation = cv2.resize(img_gray, (960, 540))
         # スタート後の画像を返す
         return observation
@@ -110,6 +110,11 @@ class AnimalTower(gym.Env):
         """
         1ステップ
         """
+        self.operations.perform()
+        self.driver.save_screenshot("test.png")
+        img_gray = cv2.imread("test.png", 0)
+        self.prev_height = calc_height(img_gray)
+
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
         # 回数分タップ
@@ -128,9 +133,12 @@ class AnimalTower(gym.Env):
             self.operations.perform()
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
-            observation = cv2.resize(img_gray, (960, 540))
             height = calc_height(img_gray)
             print(height, self.prev_height)
+            # なんとなく1秒後を観察
+            if i == 0:
+                observation = cv2.resize(img_gray, (960, 540))
+
             if height is None:
                 # 落ちた
                 if check_record(img_gray):
@@ -138,10 +146,11 @@ class AnimalTower(gym.Env):
                     return observation, -1, True, {}
             # 高さ更新
             elif height != self.prev_height:
-                if height > self.prev_height:
+                if self.prev_height is not None and height > self.prev_height:
                     reward = 1
                 self.prev_height = height
                 break
+
             sleep(1)
             print(f"更新待機中{i}")
         # 続行
