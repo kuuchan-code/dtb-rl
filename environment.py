@@ -156,7 +156,7 @@ class AnimalTower(gym.Env):
 
             if height is None:
                 # 落ちた
-                if check_record(img_gray):
+                if check_back(img_gray):
                     print("done")
                     return observation, -1, True, {}
             # 高さ更新
