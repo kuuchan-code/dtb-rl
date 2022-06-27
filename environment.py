@@ -63,7 +63,7 @@ class AnimalTower(gym.Env):
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=(144, 256))  # エージェントが受け取りうる観測空間を定義
+            low=0, high=255, shape=(1920, 1080))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = -1  # 初期値変更
         caps = {}
@@ -85,8 +85,7 @@ class AnimalTower(gym.Env):
         self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
-        img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
-        observation = img_gray_resized
+        observation = img_gray
         # スタート後の画像を返す
         return observation
 
@@ -100,7 +99,7 @@ class AnimalTower(gym.Env):
             if height is None:
                 if check_guruguru(img_gray):
                     print("done")
-                    return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
+                    return img_gray, -1, True, {}
             # 高さ更新
             elif height > self.prev_height:
                 break
@@ -118,7 +117,7 @@ class AnimalTower(gym.Env):
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
-        observation = cv2.resize(img_gray, dsize=(256, 144))
+        observation = img_gray
         print(height)
         if height and height > self.prev_height:
             reward = 1
