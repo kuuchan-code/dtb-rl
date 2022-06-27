@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from appium import webdriver
 from time import sleep
 import numpy as np
@@ -51,6 +52,14 @@ try:
                 height += "."
             else:
                 height += str(key[1])
+
+        img_gray = cv2.imread("test.png", 0)
+        template = cv2.imread("images/guruguru.png", 0)
+        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= THRESHOLD)
+        if len(loc[1]) > 0:
+            print("ぐるぐる")
+            print(loc[1])
         # タップしてみる
         actions.w3c_actions.pointer_action.move_to_location(496, 954)
         actions.w3c_actions.pointer_action.pointer_down()
