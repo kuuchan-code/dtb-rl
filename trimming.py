@@ -11,8 +11,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument("file", help="ファイル名")    # 必須の引数を追加
 # オプション引数（指定しなくても良い引数）を追加
 parser.add_argument("--x0", type=int, default=0)
-parser.add_argument("--x1", type=int, default=0)
-parser.add_argument("--y0", type=int, default=0x7fffffff)
+parser.add_argument("--x1", type=int, default=0x7fffffff)
+parser.add_argument("--y0", type=int, default=0)
 parser.add_argument("--y1", type=int, default=0x7fffffff)
 
 args = parser.parse_args()    # 4. 引数を解析
@@ -24,12 +24,18 @@ img_gray = cv2.imread(args.file, 0)
 
 print(img_gray.shape)
 
+x0 = args.x0
+x1 = min(img_gray.shape[0], args.x1)
+y0 = args.y0
+y1 = min(img_gray.shape[1], args.y1)
 
 # トリミング
-img_gray = img_gray[args.x0:args.x1, args.y0:args.y1]
+img_gray = img_gray[x0: x1, y0: y1]
+
+print(img_gray.shape)
 
 fig = plt.figure(figsize=(5, 5))
 ax = fig.add_subplot(111)
-ax.imshow(img_gray, cmap="gray")
+ax.imshow(img_gray, cmap="gray", vmin=0, vmax=255)
 ax.axis("off")
 plt.show()
