@@ -152,7 +152,7 @@ class AnimalTower(gym.Env):
             print(height, self.prev_height)
             # なんとなく1秒後を観察
             if i == 0:
-                observation = cv2.resize(img_gray, (960, 540))
+                observation = cv2.resize(img_gray, (288, 512))
 
             if height is None:
                 # 落ちた
