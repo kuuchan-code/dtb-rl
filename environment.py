@@ -75,6 +75,14 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
+        for i in range(30):
+            self.operations.perform()
+            self.driver.save_screenshot("test.png")
+            img_gray = cv2.imread("test.png", 0)
+            height = calc_height(img_gray)
+            if height != self.prev_height:
+                break
+            sleep(1)
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
         print(action, action_index)
@@ -95,8 +103,7 @@ class AnimalTower(gym.Env):
 
         self.operations.perform()
         self.driver.save_screenshot("test.png")
-        img_bgr = cv2.imread("test.png")
-        img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
@@ -110,6 +117,7 @@ class AnimalTower(gym.Env):
             reward = 0
             done = False
         self.prev_height = height
+        print(done)
         return observation, reward, done, {}
 
     def render(self):
