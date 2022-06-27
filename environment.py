@@ -15,7 +15,7 @@ THRESHOLD = 0.99
 
 
 def calc_height(img_gray):
-    img_gray_height = img_gray[65:129, 0:1080, :]
+    img_gray_height = img_gray[65:129, 0:1080]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread("digits/"+str(i)+".png", 0)
@@ -40,7 +40,7 @@ class AnimalTower(gym.Env):
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
-            low=0, high=1, shape=(256, 144))  # エージェントが受け取りうる観測空間を定義
+            low=0, high=255, shape=(144, 256))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = 0
         caps = {}
