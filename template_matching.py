@@ -10,15 +10,17 @@ img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 threshold = 0.8
 
 fig = plt.figure(figsize=(8, 5))
-ax_list = fig.add_subplot(3, 4, 12)
-idx = 0
+idx = 1
 
 for i in list(range(10))+["dot"]:
+    ax = fig.add_subplot(3, 4, idx)
+    idx += 1
     template = cv2.imread(f"digits/{i}.png", 0)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    ax.imshow(res)
+    ax.axis("off")
     loc = np.where(res >= threshold)
-    ax_list[idx].imshow(loc)
     print(len(loc))
     for j in loc:
         print(j)
