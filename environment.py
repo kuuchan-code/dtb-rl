@@ -2,13 +2,13 @@ from appium import webdriver
 import itertools
 import gym
 import numpy as np
-from appium import webdriver
 from time import sleep
 import cv2
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
+from selenium.common.exceptions import InvalidElementStateException
 
 THRESHOLD = 0.99
 
@@ -48,11 +48,12 @@ def check_guruguru(img_gray):
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
-    if len(loc[1]) > 0:
+    b = len(loc[1]) > 0
+    if b:
         print("ぐるぐるしてる")
     else:
         print("ぐるぐるしてない")
-    return len(loc[1]) > 0
+    return b
 
 
 class AnimalTower(gym.Env):
@@ -119,17 +120,21 @@ class AnimalTower(gym.Env):
         height = calc_height(img_gray)
         observation = img_gray
         print(height)
-        if height and height > self.prev_height:
-            reward = 1
-            done = False
-        elif height is None and check_guruguru(img_gray):
-            reward = -1
-            print("done")
-            done = True
+
+        # デフォルトは偽
+        done = False
+        if height is None:
+            if check_guruguru(img_gray):
+                reward = -1
+                done = True
+                print("done")
         else:
-            reward = 0
-            done = False
-        self.prev_height = height
+            if height > self.prev_height:
+                reward = 1
+            else:
+                reward = 0
+            # Noneじゃない場合のみ更新
+            self.prev_height = height
 
         return observation, reward, done, {}
 
@@ -141,9 +146,14 @@ class AnimalTower(gym.Env):
         """
         タップ
         """
-        self.operations.w3c_actions.pointer_action.move_to_location(x, y)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
-        self.operations.perform()
-        sleep(0.1)
+        while True:
+            try:
+                self.operations.w3c_actions.pointer_action.move_to_location(
+                    x, y)
+                self.operations.w3c_actions.pointer_action.pointer_down()
+                self.operations.w3c_actions.pointer_action.pause(0.1)
+                self.operations.w3c_actions.pointer_action.release()
+                self.operations.perform()
+                break
+            except InvalidElementStateException:
+                print("エラー?")
