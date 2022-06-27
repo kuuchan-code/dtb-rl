@@ -48,12 +48,16 @@ def check_guruguru(img_gray):
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
-    print(loc)
+    if len(loc[1]) > 0:
+        print("ぐるぐるしてる")
+    else:
+        print("ぐるぐるしてない")
     return len(loc[1]) > 0
 
 
 class AnimalTower(gym.Env):
     def __init__(self):
+        print("初期化")
         a = np.linspace(0, 7, 8)
         b = np.linspace(0, 1080, 64)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
@@ -74,6 +78,7 @@ class AnimalTower(gym.Env):
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
 
     def reset(self):
+        print("リセット!!")
         # 高さもリセット
         self.prev_height = -1
         # リスタートボタンをタップ
@@ -92,10 +97,12 @@ class AnimalTower(gym.Env):
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
             # 終わり
-            if height is None and check_guruguru(img_gray):
-                print("done")
-                return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
-            if height != self.prev_height:
+            if height is None:
+                if check_guruguru(img_gray):
+                    print("done")
+                    return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
+            # 高さ更新
+            elif height > self.prev_height:
                 break
             sleep(1)
             print(f"待機中{i}")
@@ -111,8 +118,7 @@ class AnimalTower(gym.Env):
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
-        img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
-        observation = img_gray_resized
+        observation = cv2.resize(img_gray, dsize=(256, 144))
         print(height)
         if height and height > self.prev_height:
             reward = 1
@@ -125,7 +131,7 @@ class AnimalTower(gym.Env):
             reward = 0
             done = False
         self.prev_height = height
-        # print(done)
+
         return observation, reward, done, {}
 
     def render(self):
@@ -141,3 +147,4 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions.pointer_action.pause(0.1)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
+        sleep(0.1)

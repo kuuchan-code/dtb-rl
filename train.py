@@ -9,5 +9,5 @@ else:
     model = A2C("MlpPolicy", AnimalTower(), verbose=1,
                 tensorboard_log="./a2c_cartpole_tensorboard/")
 print(type(model))
-model.learn(total_timesteps=5)
+model.learn(total_timesteps=1000)
 model.save("test")
