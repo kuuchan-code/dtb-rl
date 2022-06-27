@@ -4,9 +4,10 @@ from time import sleep
 import numpy as np
 import cv2
 import numpy as np
-from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.common.action_chains import ActionChains
-
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.actions import interaction
 
 caps = {}
 caps["platformName"] = "android"
@@ -16,14 +17,14 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
-pritn(driver)
+print(driver)
 # actions = TouchAction(driver)
 THRESHOLD = 0.99
 
+
 actions = ActionChains(driver)
-# actions.move_by_offset(100, 500)
-actions.click()
-actions.perform()
+actions.w3c_actions = ActionBuilder(
+    driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
 
 
 try:
@@ -51,8 +52,10 @@ try:
             else:
                 height += str(key[1])
         # タップしてみる
-        actions.move_by_offset(100, 500)
-        actions.click()
+        actions.w3c_actions.pointer_action.move_to_location(496, 954)
+        actions.w3c_actions.pointer_action.pointer_down()
+        actions.w3c_actions.pointer_action.pause(0.1)
+        actions.w3c_actions.pointer_action.release()
         actions.perform()
 
         print(height)
