@@ -3,4 +3,4 @@ pytesseract
 opencv-python
 gym
 stable_baselines
-tensorflow
+tensorflow==1.14
