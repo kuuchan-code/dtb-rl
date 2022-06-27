@@ -6,10 +6,10 @@ from stable_baselines3 import PPO
 env = AnimalTower()
 
 model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=10_000)
+model.learn(total_timesteps=1)
 
 obs = env.reset()
-for i in range(1000):
+for i in range(1):
     action, _states = model.predict(obs, deterministic=True)
     obs, reward, done, info = env.step(action)
     env.render()
