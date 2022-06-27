@@ -117,7 +117,7 @@ class AnimalTower(gym.Env):
         if height and height > self.prev_height:
             reward = 1
             done = False
-        elif not(height):
+        elif height is None:
             reward = -1
             done = True
         else:
