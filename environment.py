@@ -43,16 +43,32 @@ def check_guruguru(img_gray):
     """
     パターンマッチングでぐるぐるを探す
     """
-    img_gray_guruguru = img_gray
-    template = cv2.imread("digits/record.png", 0)
+    img_gray_guruguru = img_gray[1600:, :]
+    template = cv2.imread("images/guruguru.png", 0)
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
+    # 判定をゆるくする
+    loc = np.where(res >= 0.9)
+    b = len(loc[1]) > 0
+    return b
+
+
+def check_record(img_gray):
+    """
+    パターンマッチングで record を探す
+    """
+    template = cv2.imread("digits/record.png", 0)
+    res = cv2.matchTemplate(
+        img_gray, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
     if len(loc[1]) > 0:
         print("ぐるぐるしてる")
     else:
         print("ぐるぐるしてない")
-    return len(loc[1]) > 0
+        b = check_guruguru(img_gray)
+        if b:
+            print("と思ったらぐるぐるしてる")
+    return b
 
 
 class AnimalTower(gym.Env):
@@ -98,7 +114,7 @@ class AnimalTower(gym.Env):
             height = calc_height(img_gray)
             # 終わり
             if height is None:
-                if check_guruguru(img_gray):
+                if check_record(img_gray):
                     print("done")
                     return cv2.resize(img_gray, dsize=(512, 288)), -1, True, {}
             # 高さ更新
@@ -114,23 +130,27 @@ class AnimalTower(gym.Env):
             # print("回転")
         self._tap(action[1], 800)
 
+        sleep(7)
+
         self.operations.perform()
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
         observation = cv2.resize(img_gray, dsize=(512, 288))
         print(height)
-        if height and height > self.prev_height:
+
+        # デフォルトは偽
+        done = False
+        # デフォルトは0
+        reward = 0
+        if height is None:
+            if check_record(img_gray):
+                reward = -1
+                done = True
+                print("done")
+        elif height > self.prev_height:
+            self.prev_height = height
             reward = 1
-            done = False
-        elif height is None and check_guruguru(img_gray):
-            reward = -1
-            print("done")
-            done = True
-        else:
-            reward = 0
-            done = False
-        self.prev_height = height
 
         return observation, reward, done, {}
 
