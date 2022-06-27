@@ -1,4 +1,4 @@
-sudo docker run -v /home/ikeda/dtb-rl:/tf/dtb-rl -p 8888:8888 --runtime=nvidia  --shm-size=1.70gb -it tensorflow/tensorflow:latest-gpu-jupyter bash
+sudo docker run -v /home/ikeda/dtb-rl:/tf/dtb-rl -p 8888:8888 --runtime=nvidia --shm-size=1.70gb -it tensorflow/tensorflow:latest-gpu-jupyter bash
 
 jupyter notebook --ip=0.0.0.0 --allow-root
 sudo docker exec -it 2853c8759298 /bin/bash
@@ -8,4 +8,5 @@ sudo docker rm `sudo docker ps -a -q`
 anbox
 rlilb
 adb
+
 
