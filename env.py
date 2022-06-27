@@ -15,7 +15,7 @@ class CustomEnv(gym.Env):
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
 
     def reset(self):
-        # 初期画面の画像を返す？
+        # リスタートボタンをタップ後、初期画面の画像を返す？
         return observation
 
     def step(self, action_index):
