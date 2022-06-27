@@ -71,9 +71,8 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
-        action = self.ACTION_MAP[action_index]
         # actionのようにタップする
-        pass
+        action = self.ACTION_MAP[action_index]
         self.driver.save_screenshot('test.png')
         img_bgr = cv2.imread("test.png")
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
