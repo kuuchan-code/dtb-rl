@@ -107,6 +107,7 @@ class AnimalTower(gym.Env):
             done = False
         elif not(height):
             reward = -1
+            print("done")
             done = True
         else:
             reward = 0
