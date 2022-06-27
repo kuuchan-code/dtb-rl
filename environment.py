@@ -14,14 +14,13 @@ from selenium.webdriver.common.actions import interaction
 THRESHOLD = 0.99
 
 
-
-
 def calc_height(img_gray):
     img_gray_height = img_gray[65:129, 0:1080, :]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread("digits/"+str(i)+".png", 0)
-        res = cv2.matchTemplate(img_gray_height, template, cv2.TM_CCOEFF_NORMED)
+        res = cv2.matchTemplate(
+            img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
         for y in loc[1]:
             dict_digits[y] = i
@@ -54,7 +53,6 @@ class AnimalTower(gym.Env):
         self.operations = ActionChains(self.driver)
         self.operations.w3c_actions = ActionBuilder(
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-
 
     def reset(self):
         self.prev_height = 0

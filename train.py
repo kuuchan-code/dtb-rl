@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from stable_baselines.deepq.policies import MlpPolicy
 from stable_baselines import DQN
 from environment import AnimalTower
