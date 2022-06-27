@@ -62,11 +62,7 @@ class AnimalTower(gym.Env):
         # 高さもリセット
         self.prev_height = -1
         # リスタートボタンをタップ
-        self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
-        self.operations.perform()
+        self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
@@ -82,6 +78,7 @@ class AnimalTower(gym.Env):
             height = calc_height(img_gray)
             # 終わり
             if height is None:
+                print("終わり")
                 return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
             if height != self.prev_height:
                 break
@@ -92,19 +89,9 @@ class AnimalTower(gym.Env):
         print(action, action_index)
         # 回数分タップ
         for _ in range(int(action[0])):
-            self.operations.w3c_actions.pointer_action.move_to_location(
-                500, 1800)
-            self.operations.w3c_actions.pointer_action.pointer_down()
-            self.operations.w3c_actions.pointer_action.pause(0.1)
-            self.operations.w3c_actions.pointer_action.release()
-            self.operations.perform()
+            self._tap(500, 1800)
             # print("回転")
-
-        self.operations.w3c_actions.pointer_action.move_to_location(
-            action[1], 800)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
+        self._tap(action[1], 800)
 
         self.operations.perform()
         self.driver.save_screenshot("test.png")
@@ -129,3 +116,13 @@ class AnimalTower(gym.Env):
     def render(self):
         # プレイ画面を返す？
         pass
+
+    def _tap(self, x, y):
+        """
+        タップ
+        """
+        self.operations.w3c_actions.pointer_action.move_to_location(x, y)
+        self.operations.w3c_actions.pointer_action.pointer_down()
+        self.operations.w3c_actions.pointer_action.pause(0.1)
+        self.operations.w3c_actions.pointer_action.release()
+        self.operations.perform()
