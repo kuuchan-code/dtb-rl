@@ -38,8 +38,8 @@ def calc_height(img_gray):
 
 class AnimalTower(gym.Env):
     def __init__(self):
-        a = np.linspace(0, 1080, 64)
-        b = np.linspace(0, 7, 8)
+        a = np.linspace(0, 7, 8)
+        b = np.linspace(0, 1080, 64)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
@@ -67,11 +67,10 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
         sleep(3)
-        self.driver.save_screenshot('test.png')
-        I = cv2.imread("test.png")
-        I = cv2.cvtColor(I, cv2.COLOR_BGR2GRAY)
-        I = cv2.resize(I, dsize=(256, 144))
-        observation = I
+        img_bgr = cv2.imread("test.png")
+        img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
+        observation = img_gray_resized
         # スタート後の画像を返す
         return observation
 
@@ -80,7 +79,7 @@ class AnimalTower(gym.Env):
         action = self.ACTION_MAP[action_index]
         print(action, action_index)
         # 回数分タップ
-        for _ in range(int(action[1])):
+        for _ in range(int(action[0])):
             self.operations.w3c_actions.pointer_action.move_to_location(
                 500, 1800)
             self.operations.w3c_actions.pointer_action.pointer_down()
@@ -102,6 +101,7 @@ class AnimalTower(gym.Env):
         height = calc_height(img_gray)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
+        print(height)
         if height and height > self.prev_height:
             reward = 1
             done = False
