@@ -3,13 +3,13 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-img_rgb = cv2.imread("samples/2.52.png")
+img_rgb = cv2.imread("samples/0.66.png")
 img_rgb = img_rgb[65:129, 0:1080, :]
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 fig = plt.figure(figsize=(8, 5))
 idx = 1
-threshold = 0.9
+threshold = 0.99
 min_dist = 20
 
 dict_digits = {}
@@ -19,12 +19,11 @@ for i in list(range(10))+["dot"]:
     template = cv2.imread(f"digits/{i}.png", 0)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    threshold = 0.99
+    # threshold = 0.99
     loc = np.where(res >= threshold)
     print(loc[1])
-    if len(loc[1]) != 0:
-        for y in loc[1]:
-            dict_digits[y] = i
+    for y in loc[1]:
+        dict_digits[y] = i
     for pt in zip(*loc[::-1]):
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
 cv2.imwrite('res.png', img_rgb)
