@@ -43,16 +43,36 @@ def check_guruguru(img_gray):
     """
     パターンマッチングでぐるぐるを探す
     """
-    img_gray_guruguru = img_gray
-    template = cv2.imread("digits/record.png", 0)
+    img_gray_guruguru = img_gray[1600:, :]
+    template = cv2.imread("images/guruguru.png", 0)
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
+    # 判定をゆるくする
+    loc = np.where(res >= 0.9)
+    b = len(loc[1]) > 0
+    if b:
+        print("ぐるぐるしてる")
+    else:
+        print("ぐるぐるしてない")
+    return b
+
+
+def check_record(img_gray):
+    """
+    パターンマッチングで record を探す
+    """
+    template = cv2.imread("digits/record.png", 0)
+    res = cv2.matchTemplate(
+        img_gray, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
     b = len(loc[1]) > 0
     if b:
         print("ぐるぐるしてる")
     else:
         print("ぐるぐるしてない")
+        b = check_guruguru(img_gray)
+        if b:
+            print("と思ったらぐるぐるしてる")
     return b
 
 
@@ -99,7 +119,7 @@ class AnimalTower(gym.Env):
             height = calc_height(img_gray)
             # 終わり
             if height is None:
-                if check_guruguru(img_gray):
+                if check_record(img_gray):
                     print("done")
                     return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
             # 高さ更新
@@ -124,16 +144,16 @@ class AnimalTower(gym.Env):
 
         # デフォルトは偽
         done = False
+        # デフォルトは0
+        reward = 0
         if height is None:
-            if check_guruguru(img_gray):
+            if check_record(img_gray):
                 reward = -1
                 done = True
                 print("done")
         else:
             if height > self.prev_height:
                 reward = 1
-            else:
-                reward = 0
             # Noneじゃない場合のみ更新
             self.prev_height = height
 
