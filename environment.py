@@ -49,7 +49,10 @@ def check_guruguru(img_gray):
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
-    print(loc)
+    if len(loc[1]) > 0:
+        print("ぐるぐるしてる")
+    else:
+        print("ぐるぐるしてない")
     return len(loc[1]) > 0
 
 
