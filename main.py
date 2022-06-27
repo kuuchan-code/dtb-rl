@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
