@@ -3,13 +3,13 @@ from appium import webdriver
 import itertools
 import gym
 import numpy as np
-from appium import webdriver
 from time import sleep
 import cv2
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
+from selenium.common.exceptions import InvalidElementStateException
 
 THRESHOLD = 0.99
 
@@ -60,7 +60,7 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("初期化")
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1080, 64)
+        b = np.linspace(0, 1079, 64)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
@@ -144,9 +144,14 @@ class AnimalTower(gym.Env):
         """
         タップ
         """
-        self.operations.w3c_actions.pointer_action.move_to_location(x, y)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
-        self.operations.perform()
-        sleep(0.1)
+        while True:
+            try:
+                self.operations.w3c_actions.pointer_action.move_to_location(
+                    x, y)
+                self.operations.w3c_actions.pointer_action.pointer_down()
+                self.operations.w3c_actions.pointer_action.pause(0.1)
+                self.operations.w3c_actions.pointer_action.release()
+                self.operations.perform()
+                break
+            except InvalidElementStateException:
+                print("エラー?")
