@@ -30,10 +30,11 @@ def calc_height(img_gray):
             height += "."
         else:
             height += str(key[1])
-    if height != "":
-        return float(height)
+    if height:
+        height = float(height)
     else:
-        return ""
+        height = None
+    return height
 
 
 class AnimalTower(gym.Env):
@@ -45,7 +46,7 @@ class AnimalTower(gym.Env):
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(144, 256))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
-        self.prev_height = 0
+        self.prev_height = -1  # 初期値変更
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -59,7 +60,7 @@ class AnimalTower(gym.Env):
 
     def reset(self):
         # 高さもリセット
-        self.prev_height = 0
+        self.prev_height = -1
         # リスタートボタンをタップ
         self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
         self.operations.w3c_actions.pointer_action.pointer_down()
@@ -75,6 +76,18 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
+        for i in range(10):
+            self.operations.perform()
+            self.driver.save_screenshot("test.png")
+            img_gray = cv2.imread("test.png", 0)
+            height = calc_height(img_gray)
+            # 終わり
+            if height is None:
+                return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
+            if height != self.prev_height:
+                break
+            sleep(1)
+            print(f"待機中{i}")
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
         print(action, action_index)
@@ -86,18 +99,17 @@ class AnimalTower(gym.Env):
             self.operations.w3c_actions.pointer_action.pause(0.1)
             self.operations.w3c_actions.pointer_action.release()
             self.operations.perform()
+            # print("回転")
 
         self.operations.w3c_actions.pointer_action.move_to_location(
-            500, action[0])
+            action[1], 800)
         self.operations.w3c_actions.pointer_action.pointer_down()
         self.operations.w3c_actions.pointer_action.pause(0.1)
         self.operations.w3c_actions.pointer_action.release()
 
         self.operations.perform()
-        sleep(10)
-        self.driver.save_screenshot('test.png')
-        img_bgr = cv2.imread("test.png")
-        img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        self.driver.save_screenshot("test.png")
+        img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
         observation = img_gray_resized
@@ -105,7 +117,7 @@ class AnimalTower(gym.Env):
         if height and height > self.prev_height:
             reward = 1
             done = False
-        elif not(height):
+        elif height is None:
             reward = -1
             print("done")
             done = True
@@ -113,6 +125,7 @@ class AnimalTower(gym.Env):
             reward = 0
             done = False
         self.prev_height = height
+        print(done)
         return observation, reward, done, {}
 
     def render(self):
