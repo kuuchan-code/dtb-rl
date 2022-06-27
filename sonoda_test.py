@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+
 from appium import webdriver
 from time import sleep
 import numpy as np
 import cv2
 import numpy as np
-from appium.webdriver.common.touch_action import TouchAction
-
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.actions import interaction
 
 caps = {}
 caps["platformName"] = "android"
@@ -15,7 +18,15 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+print(driver)
+# actions = TouchAction(driver)
 THRESHOLD = 0.99
+
+
+actions = ActionChains(driver)
+actions.w3c_actions = ActionBuilder(
+    driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+
 
 try:
     while True:
@@ -41,8 +52,21 @@ try:
                 height += "."
             else:
                 height += str(key[1])
+
+        img_gray = cv2.imread("test.png", 0)
+        template = cv2.imread("images/guruguru.png", 0)
+        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= THRESHOLD)
+        if len(loc[1]) > 0:
+            print("ぐるぐる")
+            print(loc[1])
         # タップしてみる
-        TouchAction(driver).tap(None, 100, 100, 1).perform()
+        actions.w3c_actions.pointer_action.move_to_location(496, 954)
+        actions.w3c_actions.pointer_action.pointer_down()
+        actions.w3c_actions.pointer_action.pause(0.1)
+        actions.w3c_actions.pointer_action.release()
+        actions.perform()
+
         print(height)
         sleep(1)
 

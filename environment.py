@@ -37,13 +37,15 @@ def calc_height(img_gray):
             height += str(key[1])
     return float(height)
 
+
 class AnimalTower(gym.Env):
     def __init__(self):
         a = np.linspace(0, 1080, 64)
         b = np.linspace(0, 7, 8)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
-        self.observation_space = gym.spaces.Box(low=0, high=1, shape=(256, 144))  # エージェントが受け取りうる観測空間を定義
+        self.observation_space = gym.spaces.Box(
+            low=0, high=1, shape=(256, 144))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = 0
 
