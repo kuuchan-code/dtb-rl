@@ -13,20 +13,30 @@ class CustomEnv(gym.Env):
         self.ACTION_MAP = np.array(
             [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]])  # アクションの用意
         self.action_space = gym.spaces.Discrete(8)       # エージェントが取りうる行動空間を定義
-        self.observation_space = ...  # エージェントが受け取りうる観測空間を定義
+        self.observationervation_space = ...  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
 
     def reset(self):
-        # 環境を初期状態にする関数
-        # 初期状態をreturnする
-        self.done = False
-        return obs
+        # 初期画面の画像を返す？
+        return observation
 
-    def step(self, action):
+    def step(self, action_index):
         # 行動を受け取り行動後の状態をreturnする
-        if action == 0:
-            pass
-        return obs, reward, done, info
+        action = self.ACTION_MAP[action_index]
+        # action後の画像(observation)を返す
+        # 高くなったら +1
+        if 高くなったら:
+            reward = 1
+            done = False
+        # つめたらreward 0
+        elif つめたら:
+            reward = 0
+            done = False
+        # 落としたらreward -1
+        else:
+            reward = -1
+            done = True
+        return observation, reward, done, {}
 
     def render(self, mode='human'):
         # modeとしてhuman, rgb_array, ansiが選択可能
