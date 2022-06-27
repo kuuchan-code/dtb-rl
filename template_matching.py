@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 img_rgb = cv2.imread("samples/1.38.png")
-img_rgb = img_rgb[50:140, 0:280, :]
+img_rgb = img_rgb[65:129, 0:1080, :]
 dict_digits = {}
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
