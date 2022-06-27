@@ -76,14 +76,14 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
-        for i in range(30):
+        for i in range(10):
             self.operations.perform()
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
             # 終わり
-            # if not height:
-            #     return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
+            if height is None:
+                return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
             if height != self.prev_height:
                 break
             sleep(1)
@@ -99,7 +99,7 @@ class AnimalTower(gym.Env):
             self.operations.w3c_actions.pointer_action.pause(0.1)
             self.operations.w3c_actions.pointer_action.release()
             self.operations.perform()
-            print("回転")
+            # print("回転")
 
         self.operations.w3c_actions.pointer_action.move_to_location(
             action[1], 800)
