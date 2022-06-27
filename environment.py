@@ -43,8 +43,8 @@ def check_guruguru(img_gray):
     """
     パターンマッチングでぐるぐるを探す
     """
-    img_gray_guruguru = img_gray[1600:, :]
-    template = cv2.imread("images/guruguru.png", 0)
+    img_gray_guruguru = img_gray
+    template = cv2.imread("digits/record.png", 0)
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
