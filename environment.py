@@ -48,11 +48,12 @@ def check_guruguru(img_gray):
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
-    if len(loc[1]) > 0:
+    b = len(loc[1]) > 0
+    if b:
         print("ぐるぐるしてる")
     else:
         print("ぐるぐるしてない")
-    return len(loc[1]) > 0
+    return b
 
 
 class AnimalTower(gym.Env):
@@ -120,17 +121,21 @@ class AnimalTower(gym.Env):
         height = calc_height(img_gray)
         observation = cv2.resize(img_gray, dsize=(256, 144))
         print(height)
-        if height and height > self.prev_height:
-            reward = 1
-            done = False
-        elif height is None and check_guruguru(img_gray):
-            reward = -1
-            print("done")
-            done = True
+
+        # デフォルトは偽
+        done = False
+        if height is None:
+            if check_guruguru(img_gray):
+                reward = -1
+                done = True
+                print("done")
         else:
-            reward = 0
-            done = False
-        self.prev_height = height
+            if height > self.prev_height:
+                reward = 1
+            else:
+                reward = 0
+            # Noneじゃない場合のみ更新
+            self.prev_height = height
 
         return observation, reward, done, {}
 
