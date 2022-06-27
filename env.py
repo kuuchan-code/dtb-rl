@@ -28,14 +28,14 @@ class CustomEnv(gym.Env):
         if 高くなったら:
             reward = 1
             done = False
-        # つめたらreward 0
-        elif つめたら:
-            reward = 0
-            done = False
         # 落としたらreward -1
-        else:
+        elif 落としたら:
             reward = -1
             done = True
+        # つめたらreward 0
+        else:
+            reward = 0
+            done = False
         return observation, reward, done, {}
 
     def render(self):
