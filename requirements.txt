@@ -2,3 +2,5 @@ Appium-Python-Client
 pytesseract
 opencv-python
 gym
+stable_baselines
+tensorflow

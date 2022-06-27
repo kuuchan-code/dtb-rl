@@ -30,7 +30,7 @@ actions.w3c_actions = ActionBuilder(
 
 try:
     while True:
-        driver.save_screenshot('test.png')
+        driver.save_screenshot("test.png")
         img_bgr = cv2.imread("test.png")
         img_bgr = img_bgr[65:129, 0:300, :]
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
@@ -54,14 +54,18 @@ try:
                 height += str(key[1])
 
         img_gray = cv2.imread("test.png", 0)
+        img_gray = img_gray[1680:, :]
+
         template = cv2.imread("images/guruguru.png", 0)
         res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
+        # タップしてみる
         if len(loc[1]) > 0:
             print("ぐるぐる")
             print(loc[1])
-        # タップしてみる
-        actions.w3c_actions.pointer_action.move_to_location(496, 954)
+            actions.w3c_actions.pointer_action.move_to_location(284, 1801)
+        else:
+            actions.w3c_actions.pointer_action.move_to_location(496, 954)
         actions.w3c_actions.pointer_action.pointer_down()
         actions.w3c_actions.pointer_action.pause(0.1)
         actions.w3c_actions.pointer_action.release()
