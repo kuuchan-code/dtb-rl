@@ -58,6 +58,7 @@ class AnimalTower(gym.Env):
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
 
     def reset(self):
+        # 高さもリセット
         self.prev_height = 0
         # リスタートボタンをタップ
         self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
@@ -75,13 +76,24 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
-        print(action_index)
-        action = self.ACTION_MAP[action_index]
         # actionのようにタップする
-        self.operations.w3c_actions.pointer_action.move_to_location(496, 954)
+        action = self.ACTION_MAP[action_index]
+        print(action, action_index)
+        # 回数分タップ
+        for _ in range(int(action[1])):
+            self.operations.w3c_actions.pointer_action.move_to_location(
+                500, 1800)
+            self.operations.w3c_actions.pointer_action.pointer_down()
+            self.operations.w3c_actions.pointer_action.pause(0.1)
+            self.operations.w3c_actions.pointer_action.release()
+            self.operations.perform()
+
+        self.operations.w3c_actions.pointer_action.move_to_location(
+            500, action[0])
         self.operations.w3c_actions.pointer_action.pointer_down()
         self.operations.w3c_actions.pointer_action.pause(0.1)
         self.operations.w3c_actions.pointer_action.release()
+
         self.operations.perform()
         sleep(10)
         self.driver.save_screenshot('test.png')
