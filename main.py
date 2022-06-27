@@ -28,7 +28,7 @@ try:
             w, h = template.shape[::-1]
             res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
             loc = np.where(res >= THRESHOLD)
-            print(loc[1])
+            # print(loc[1])
             for y in loc[1]:
                 dict_digits[y] = i
             for pt in zip(*loc[::-1]):
