@@ -1,4 +1,4 @@
-import gym
+from stable_baselines3 import A2C
 from environment import AnimalTower
 
 from stable_baselines3 import PPO
@@ -18,3 +18,4 @@ for i in range(1):
     print(f"{i}回目ループ")
 
 env.close()
+model = A2C("MlpPolicy", AnimalTower()).learn(1)
