@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import itertools
 import gym
-from gym import spaces
 import numpy as np
 
 
