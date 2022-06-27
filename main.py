@@ -25,10 +25,11 @@ try:
             template = cv2.imread("digits/"+str(i)+".png",0)
             w, h = template.shape[::-1]
             res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-            threshold = 0.9
+            threshold = 0.99
             loc = np.where(res >= threshold)
             if len(loc[1]) != 0:
-                dict_digits[loc[1].min()] = i
+                for y in loc[1]:
+                    dict_digits[y] = i
             for pt in zip(*loc[::-1]):  
                 cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
         height = ""

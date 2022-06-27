@@ -13,7 +13,6 @@ for i in list(range(10))+["dot"]:
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
     threshold = 0.99
     loc = np.where(res >= threshold)
-    print(loc)
     if len(loc[1]) != 0:
         for y in loc[1]:
             dict_digits[y] = i
