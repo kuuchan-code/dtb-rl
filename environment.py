@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
+from appium import webdriver
 import itertools
 import gym
 import numpy as np
 from appium import webdriver
 from time import sleep
 import cv2
-
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.actions import interaction
 
 THRESHOLD = 0.99
 
-caps = {}
-caps["platformName"] = "android"
-caps["appium:ensureWebviewsHavePages"] = True
-caps["appium:nativeWebScreenshot"] = True
-caps["appium:newCommandTimeout"] = 3600
-caps["appium:connectHardwareKeyboard"] = True
 
-driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
 
 
 def calc_height(img_gray):
@@ -24,7 +21,6 @@ def calc_height(img_gray):
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread("digits/"+str(i)+".png", 0)
-        w, h = template.shape[::-1]
         res = cv2.matchTemplate(img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
         for y in loc[1]:
@@ -48,24 +44,39 @@ class AnimalTower(gym.Env):
             low=0, high=1, shape=(256, 144))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = 0
+        caps = {}
+        caps["platformName"] = "android"
+        caps["appium:ensureWebviewsHavePages"] = True
+        caps["appium:nativeWebScreenshot"] = True
+        caps["appium:newCommandTimeout"] = 3600
+        caps["appium:connectHardwareKeyboard"] = True
+        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+        self.operations = ActionChains(self.driver)
+        self.operations.w3c_actions = ActionBuilder(
+            self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+
 
     def reset(self):
         self.prev_height = 0
         # リスタートボタンをタップ
-        pass
-        driver.save_screenshot('test.png')
+        self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
+        self.operations.w3c_actions.pointer_action.pointer_down()
+        self.operations.w3c_actions.pointer_action.pause(0.1)
+        self.operations.w3c_actions.pointer_action.release()
+        self.operations.perform()
+        self.driver.save_screenshot('test.png')
         I = cv2.imread("test.png")
         I = cv2.cvtColor(I, cv2.COLOR_BGR2GRAY)
         I = cv2.resize(I, dsize=(256, 144))
         observation = I
-        # スタート後の画像を返す？
+        # スタート後の画像を返す
         return observation
 
     def step(self, action_index):
         action = self.ACTION_MAP[action_index]
         # actionのようにタップする
         pass
-        driver.save_screenshot('test.png')
+        self.driver.save_screenshot('test.png')
         img_bgr = cv2.imread("test.png")
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         height = calc_height(img_gray)
