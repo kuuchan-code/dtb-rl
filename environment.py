@@ -21,7 +21,7 @@ def calc_height(img_gray):
     img_gray_height = img_gray[65:129, 0:1080]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
-        template = cv2.imread("digits/"+str(i)+".png", 0)
+        template = cv2.imread(f"digits/{i}.png", 0)
         res = cv2.matchTemplate(
             img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
@@ -38,6 +38,19 @@ def calc_height(img_gray):
     else:
         height = None
     return height
+
+
+def check_guruguru(img_gray):
+    """
+    パターンマッチングでぐるぐるを探す
+    """
+    img_gray_guruguru = img_gray[1600:, :]
+    template = cv2.imread("images/guruguru.png", 0)
+    res = cv2.matchTemplate(
+        img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
+    loc = np.where(res >= THRESHOLD)
+    print(loc)
+    return len(loc[1]) > 0
 
 
 class AnimalTower(gym.Env):
@@ -80,8 +93,8 @@ class AnimalTower(gym.Env):
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
             # 終わり
-            if height is None:
-                print("終わり")
+            if height is None and check_guruguru(img_gray):
+                print("done")
                 return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
             if height != self.prev_height:
                 break
@@ -106,7 +119,7 @@ class AnimalTower(gym.Env):
         if height and height > self.prev_height:
             reward = 1
             done = False
-        elif height is None:
+        elif height is None and check_guruguru(img_gray):
             reward = -1
             print("done")
             done = True
