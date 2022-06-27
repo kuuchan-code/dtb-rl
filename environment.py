@@ -14,10 +14,13 @@ THRESHOLD = 0.99
 
 
 def calc_height(img_gray):
+    """
+    パターンマッチングで高さ計算
+    """
     img_gray_height = img_gray[65:129, 0:1080]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
-        template = cv2.imread("digits/"+str(i)+".png", 0)
+        template = cv2.imread(f"digits/{i}.png", 0)
         res = cv2.matchTemplate(
             img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
@@ -34,6 +37,19 @@ def calc_height(img_gray):
     else:
         height = None
     return height
+
+
+def check_guruguru(img_gray):
+    """
+    パターンマッチングでぐるぐるを探す
+    """
+    img_gray_guruguru = img_gray[1600:, :]
+    template = cv2.imread("images/guruguru.png", 0)
+    res = cv2.matchTemplate(
+        img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
+    loc = np.where(res >= THRESHOLD)
+    print(loc)
+    return len(loc[1]) > 0
 
 
 class AnimalTower(gym.Env):
@@ -61,11 +77,7 @@ class AnimalTower(gym.Env):
         # 高さもリセット
         self.prev_height = -1
         # リスタートボタンをタップ
-        self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
-        self.operations.perform()
+        self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
         img_gray_resized = cv2.resize(img_gray, dsize=(256, 144))
@@ -80,7 +92,8 @@ class AnimalTower(gym.Env):
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
             # 終わり
-            if height is None:
+            if height is None and check_guruguru(img_gray):
+                print("done")
                 return cv2.resize(img_gray, dsize=(256, 144)), -1, True, {}
             if height != self.prev_height:
                 break
@@ -90,19 +103,9 @@ class AnimalTower(gym.Env):
         action = self.ACTION_MAP[action_index]
         # 回数分タップ
         for _ in range(int(action[0])):
-            self.operations.w3c_actions.pointer_action.move_to_location(
-                500, 1800)
-            self.operations.w3c_actions.pointer_action.pointer_down()
-            self.operations.w3c_actions.pointer_action.pause(0.1)
-            self.operations.w3c_actions.pointer_action.release()
-            self.operations.perform()
+            self._tap(500, 1800)
             # print("回転")
-
-        self.operations.w3c_actions.pointer_action.move_to_location(
-            action[1], 800)
-        self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
-        self.operations.w3c_actions.pointer_action.release()
+        self._tap(action[1], 800)
 
         self.operations.perform()
         self.driver.save_screenshot("test.png")
@@ -114,7 +117,7 @@ class AnimalTower(gym.Env):
         if height and height > self.prev_height:
             reward = 1
             done = False
-        elif height is None:
+        elif height is None and check_guruguru(img_gray):
             reward = -1
             print("done")
             done = True
@@ -128,3 +131,13 @@ class AnimalTower(gym.Env):
     def render(self):
         # プレイ画面を返す？
         pass
+
+    def _tap(self, x, y):
+        """
+        タップ
+        """
+        self.operations.w3c_actions.pointer_action.move_to_location(x, y)
+        self.operations.w3c_actions.pointer_action.pointer_down()
+        self.operations.w3c_actions.pointer_action.pause(0.1)
+        self.operations.w3c_actions.pointer_action.release()
+        self.operations.perform()
