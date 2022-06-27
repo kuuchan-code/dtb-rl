@@ -19,9 +19,10 @@ try:
         driver.save_screenshot('test.png')
         I = Image.open('test.png')
         I = I.convert("L").point(lambda x: 255 if x < 255 else 0, mode="1")
-        I = I.crop((0,50,500,450))
+        I = I.crop((0, 50, 500, 450))
         # print(pytesseract.image_to_string(I))
-        print(pytesseract.image_to_string(I, lang="jpn", config="digits --psm 6").split()[0])
+        print(pytesseract.image_to_string(
+            I, lang="jpn", config="digits --psm 6").split()[0])
         sleep(1)
 except KeyboardInterrupt:
     driver.quit()
