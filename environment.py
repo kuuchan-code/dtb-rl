@@ -74,11 +74,9 @@ class AnimalTower(gym.Env):
         if height > self.prev_height:
             reward = 1
             done = False
-        # 落としたらreward -1
-        elif 落としたら:
+        elif not(height):
             reward = -1
             done = True
-        # つめたらreward 0
         else:
             reward = 0
             done = False
