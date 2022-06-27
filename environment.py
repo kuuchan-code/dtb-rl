@@ -53,11 +53,11 @@ def check_guruguru(img_gray):
     return b
 
 
-def check_back(img_gray):
+def check_record(img_gray):
     """
-    パターンマッチングで back を探す
+    パターンマッチングで record を探す
     """
-    template = cv2.imread("digits/back.png", 0)
+    template = cv2.imread("digits/record.png", 0)
     res = cv2.matchTemplate(
         img_gray, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
@@ -76,9 +76,9 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("初期化")
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, 64)
+        b = np.linspace(0, 1079, 32)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
+        self.action_space = gym.spaces.Discrete(256)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(288, 512))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
@@ -106,14 +106,14 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
-        for i in range(10):
+        for i in range(5):
             self.operations.perform()
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
             # 終わり
             if height is None:
-                if check_back(img_gray):
+                if check_record(img_gray):
                     print("done")
                     return cv2.resize(img_gray, dsize=(512, 288)), -1, True, {}
             # 高さ更新
@@ -156,7 +156,7 @@ class AnimalTower(gym.Env):
 
             if height is None:
                 # 落ちた
-                if check_back(img_gray):
+                if check_record(img_gray):
                     print("done")
                     return observation, -1, True, {}
             # 高さ更新
@@ -181,7 +181,7 @@ class AnimalTower(gym.Env):
         """
         self.operations.w3c_actions.pointer_action.move_to_location(x, y)
         self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.1)
+        self.operations.w3c_actions.pointer_action.pause(0.01)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
-        sleep(0.1)
+        sleep(0.01)
