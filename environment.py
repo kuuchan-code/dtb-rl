@@ -45,7 +45,7 @@ class AnimalTower(gym.Env):
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(144, 256))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
-        self.prev_height = 0
+        self.prev_height = -1  # 初期値変更
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -59,7 +59,7 @@ class AnimalTower(gym.Env):
 
     def reset(self):
         # 高さもリセット
-        self.prev_height = 0
+        self.prev_height = -1
         # リスタートボタンをタップ
         self.operations.w3c_actions.pointer_action.move_to_location(263, 1755)
         self.operations.w3c_actions.pointer_action.pointer_down()
