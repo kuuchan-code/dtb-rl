@@ -76,9 +76,9 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("初期化")
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, 64)
+        b = np.linspace(0, 1079, 32)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
+        self.action_space = gym.spaces.Discrete(256)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(288, 512))  # エージェントが受け取りうる観測空間を定義
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
@@ -181,7 +181,7 @@ class AnimalTower(gym.Env):
         """
         self.operations.w3c_actions.pointer_action.move_to_location(x, y)
         self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.8)
+        self.operations.w3c_actions.pointer_action.pause(0.01)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
-        sleep(0.1)
+        sleep(0.01)
