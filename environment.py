@@ -53,7 +53,7 @@ def check_guruguru(img_gray):
     return b
 
 
-def check_record(img_gray):
+def check_back(img_gray):
     """
     パターンマッチングで back を探す
     """
@@ -63,12 +63,13 @@ def check_record(img_gray):
     loc = np.where(res >= THRESHOLD)
     if len(loc[1]) > 0:
         print("ぐるぐるしてる")
+        return True
     else:
         print("ぐるぐるしてない")
-        b = check_guruguru(img_gray)
-        if b:
-            print("と思ったらぐるぐるしてる")
-    return b
+        # b = check_guruguru(img_gray)
+        # if b:
+        #     print("と思ったらぐるぐるしてる")
+        return False
 
 
 class AnimalTower(gym.Env):
@@ -79,11 +80,7 @@ class AnimalTower(gym.Env):
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
-<<<<<<< HEAD
             low=0, high=255, shape=(288, 512))  # エージェントが受け取りうる観測空間を定義
-=======
-            low=0, high=255, shape=(540, 960))  # エージェントが受け取りうる観測空間を定義
->>>>>>> 8c688784914eec0d90dc8ebe5abb1ffb69a911b7
         self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
         self.prev_height = -1  # 初期値変更
         caps = {}
@@ -103,19 +100,12 @@ class AnimalTower(gym.Env):
         self._tap(200, 1755)
         sleep(3)
         img_gray = cv2.imread("test.png", 0)
-<<<<<<< HEAD
         img_gray_resized = cv2.resize(img_gray, dsize=(512, 288))
         observation = img_gray_resized
-=======
-        # 高さもリセット
-        self.prev_height = calc_height(img_gray)
-        observation = cv2.resize(img_gray, (960, 540))
->>>>>>> 8c688784914eec0d90dc8ebe5abb1ffb69a911b7
         # スタート後の画像を返す
         return observation
 
     def step(self, action_index):
-<<<<<<< HEAD
         for i in range(10):
             self.operations.perform()
             self.driver.save_screenshot("test.png")
@@ -123,7 +113,7 @@ class AnimalTower(gym.Env):
             height = calc_height(img_gray)
             # 終わり
             if height is None:
-                if check_record(img_gray):
+                if check_back(img_gray):
                     print("done")
                     return cv2.resize(img_gray, dsize=(512, 288)), -1, True, {}
             # 高さ更新
@@ -131,16 +121,6 @@ class AnimalTower(gym.Env):
                 break
             sleep(1)
             print(f"待機中{i}")
-=======
-        """
-        1ステップ
-        """
-        self.operations.perform()
-        self.driver.save_screenshot("test.png")
-        img_gray = cv2.imread("test.png", 0)
-        self.prev_height = calc_height(img_gray)
-
->>>>>>> 8c688784914eec0d90dc8ebe5abb1ffb69a911b7
         # actionのようにタップする
         action = self.ACTION_MAP[action_index]
         # 回数分タップ
@@ -151,7 +131,6 @@ class AnimalTower(gym.Env):
 
         sleep(1)
 
-<<<<<<< HEAD
         self.operations.perform()
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
@@ -161,8 +140,6 @@ class AnimalTower(gym.Env):
 
         # デフォルトは偽
         done = False
-=======
->>>>>>> 8c688784914eec0d90dc8ebe5abb1ffb69a911b7
         # デフォルトは0
         reward = 0
 
