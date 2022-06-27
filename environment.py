@@ -65,6 +65,7 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions.pointer_action.pause(0.1)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
+        sleep(3)
         self.driver.save_screenshot('test.png')
         I = cv2.imread("test.png")
         I = cv2.cvtColor(I, cv2.COLOR_BGR2GRAY)
@@ -74,6 +75,7 @@ class AnimalTower(gym.Env):
         return observation
 
     def step(self, action_index):
+        print(action_index)
         action = self.ACTION_MAP[action_index]
         # actionのようにタップする
         self.operations.w3c_actions.pointer_action.move_to_location(496, 954)
@@ -81,6 +83,7 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions.pointer_action.pause(0.1)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
+        sleep(10)
         self.driver.save_screenshot('test.png')
         img_bgr = cv2.imread("test.png")
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
