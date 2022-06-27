@@ -13,10 +13,10 @@ for i in list(range(10))+["dot"]:
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
     loc = np.where(res >= threshold)
-    if len(loc[1]) == 0:
+    if len(loc[1]) != 0:
         print(loc[1].min())
-        # dict_digits[loc[1].min()] = i
+        dict_digits[loc[1].min()] = i
     for pt in zip(*loc[::-1]):
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
 cv2.imwrite('res.png',img_rgb)
-print(dict_digits)
+print(sorted(dict_digits.items()))
