@@ -55,9 +55,9 @@ def check_guruguru(img_gray):
 
 def check_record(img_gray):
     """
-    パターンマッチングで record を探す
+    パターンマッチングで back を探す
     """
-    template = cv2.imread("digits/record.png", 0)
+    template = cv2.imread("digits/back.png", 0)
     res = cv2.matchTemplate(
         img_gray, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
