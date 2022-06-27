@@ -17,7 +17,7 @@ def calc_height(img_gray):
     """
     パターンマッチングで高さ計算
     """
-    img_gray_height = img_gray[65:129, 0:1080]
+    img_gray_height = img_gray[65:129, :]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread(f"digits/{i}.png", 0)
@@ -43,8 +43,8 @@ def check_guruguru(img_gray):
     """
     パターンマッチングでぐるぐるを探す
     """
-    img_gray_guruguru = img_gray[1600:, :]
-    template = cv2.imread("images/guruguru.png", 0)
+    img_gray_guruguru = img_gray
+    template = cv2.imread("digits/record.png", 0)
     res = cv2.matchTemplate(
         img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
@@ -59,7 +59,7 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("初期化")
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1080, 64)
+        b = np.linspace(0, 1079, 64)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
         self.observation_space = gym.spaces.Box(
