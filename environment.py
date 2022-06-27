@@ -17,7 +17,7 @@ def calc_height(img_gray):
     """
     パターンマッチングで高さ計算
     """
-    img_gray_height = img_gray[65:129, 0:1080]
+    img_gray_height = img_gray[65:129, :]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
         template = cv2.imread(f"digits/{i}.png", 0)
