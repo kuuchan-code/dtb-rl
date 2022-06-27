@@ -29,7 +29,10 @@ def calc_height(img_gray):
             height += "."
         else:
             height += str(key[1])
-    return float(height)
+    if height != "":
+        return float(height)
+    else:
+        return ""
 
 
 class AnimalTower(gym.Env):
