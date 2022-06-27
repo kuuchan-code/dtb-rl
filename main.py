@@ -24,7 +24,7 @@ try:
             template = cv2.imread("digits/"+str(i)+".png",0)
             w, h = template.shape[::-1]
             res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-            threshold = 0.8
+            threshold = 0.9
             loc = np.where(res >= threshold)
             if len(loc[1]) != 0:
                 dict_digits[loc[1].min()] = i
