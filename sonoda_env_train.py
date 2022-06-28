@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 from tensorflow.python import keras
 from appium import webdriver
 import gym
@@ -8,7 +9,7 @@ from time import sleep
 import cv2
 import tensorflow as tf
 import keras
-from keras.layers import Dense
+from keras.layers import Dense, Flatten
 from keras.optimizers import Adam
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
@@ -102,9 +103,9 @@ class AnimalTower(gym.Env):
         self.action_space = gym.spaces.Box(
             self.act_min, self.act_max, shape=(1,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=TRAIN_SIZE[::-1])
-        self.reward_range = [-10, 10]
-        self.prev_height = 0
+            low=0.0, high=1.0, shape=TRAIN_SIZE[::-1], dtype=np.float32)
+        self.reward_range = [-10.0, 10.0]
+        self.prev_height = 0.0
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -126,13 +127,16 @@ class AnimalTower(gym.Env):
         img_gray = cv2.imread(SS_NAME, 0)
         img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
         self.prev_height = get_heght(img_gray)
-        observation = img_gray_resized
+        self.observation = img_gray_resized
         # Returns obs after start
         print("Done")
-        cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation
+        cv2.imwrite(OBSERVATION_NAME, self.observation)
+        return self.observation / 255.0
 
     def step(self, action):
+        # 例外処理
+        if np.isnan(action):
+            return np.array(self.observation), 0.0, True, {}
         # Perform Action
         x = (np.clip(action[0], self.act_min, self.act_max) + 1) / 2 * 1079
         print(f"Action({x})")
@@ -144,28 +148,28 @@ class AnimalTower(gym.Env):
             height = get_heght(img_gray)
             print(height, self.prev_height)
             img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
-            observation = img_gray_resized
+            self.observation = img_gray_resized
             if check_record(img_gray):
                 print("Game over")
                 print("return observation, -1, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
-                cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, -10, True, {}
+                cv2.imwrite(OBSERVATION_NAME, self.observation)
+                return self.observation / 255.0, -10.0, True, {}
             elif height != self.prev_height:
                 print(f"Height update: {height}m")
                 print("return observation, 1, False, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 self.prev_height = height
-                cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, height, False, {}
+                cv2.imwrite(OBSERVATION_NAME, self.observation)
+                return self.observation / 255.0, height, False, {}
             else:
                 pass
             sleep(POLLONG_INTERVAL)
         print("No height update")
         print("return observation, 0, False, {}")
         print("-"*NUM_OF_DELIMITERS)
-        cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation, height, False, {}
+        cv2.imwrite(OBSERVATION_NAME, self.observation)
+        return self.observation / 255.0, height, False, {}
 
     def render(self):
         pass
@@ -211,6 +215,8 @@ class PolicyModel(keras.Model):
         super().__init__()
 
         # 各レイヤーを定義
+        # 1次元化を追加
+        self.flatten0 = Flatten()
         self.dense1 = Dense(16, activation="relu")
         self.dense2 = Dense(16, activation="relu")
         self.pi_mean = Dense(
@@ -223,8 +229,11 @@ class PolicyModel(keras.Model):
 
     # Forward pass
     def call(self, inputs, training=False):
+        # print(f"model inputs=\n{inputs}")
         # 共通層
-        x = self.dense1(inputs)
+        x = self.flatten0(inputs)
+        # print(x)
+        x = self.dense1(x)
         x = self.dense2(x)
 
         # ガウス分布のパラメータ層
@@ -249,6 +258,7 @@ class PolicyModel(keras.Model):
         # tanhを適用
         actions_squashed = tf.tanh(actions)
 
+        print(mean, stddev, actions, actions_squashed)
         # 学習にtanh適用前のactionも欲しいのでそれも返す
         return actions_squashed.numpy()[0], actions.numpy()[0]
 
@@ -333,10 +343,14 @@ if __name__ == "__main__":
 
     action_centor = (env.action_space.high + env.action_space.low)/2
     action_scale = env.action_space.high - action_centor
-    print(action_centor, action_scale)
+    # print(action_centor, action_scale)
 
-    # モデルを作成
-    model = PolicyModel(env.action_space)
+    model_name = "sonoda_model"
+    # モデルを作成もしくは読み込み
+    if os.path.exists(model_name):
+        model = keras.models.load_model(model_name)
+    else:
+        model = PolicyModel(env.action_space)
     # exit()
 
     # 経験バッファ用
@@ -403,4 +417,4 @@ if __name__ == "__main__":
                 np.mean(history_metrics[-interval:]),
                 max(history_metrics[-interval:]),
             ))
-        model.save("yeah")
+        model.save(model_name)
