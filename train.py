@@ -4,8 +4,8 @@ from stable_baselines3 import A2C
 from environment import AnimalTower, TRAIN_WIDTH
 import os
 
-if os.path.exists(f"test_{TRAIN_WIDTH}.zip"):
-    model = A2C.load(f"test_{TRAIN_WIDTH}.zip", AnimalTower(),
+if os.path.exists(f"kuu.zip"):
+    model = A2C.load(f"kuu.zip", AnimalTower(),
                      print_system_info=True)
 else:
     model = A2C("MlpPolicy", AnimalTower(), verbose=1,
