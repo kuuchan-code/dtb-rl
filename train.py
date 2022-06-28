@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO, A2C
 from environment import AnimalTower
 import os
 
@@ -14,3 +13,6 @@ for i in range(100):
     # print(type(model))
     model.learn(total_timesteps=20)
     model.save("half")
+# model = PPO('MlpPolicy', AnimalTower(), verbose=1, tensorboard_log="./dtb_ppo/")
+# model.learn(total_timesteps=10_000)
+# model.save("kuu")

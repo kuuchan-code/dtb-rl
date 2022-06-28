@@ -2,6 +2,7 @@ from appium import webdriver
 import itertools
 import gym
 import numpy as np
+from appium import webdriver
 from time import sleep
 import cv2
 from selenium.webdriver.common.action_chains import ActionChains
@@ -11,16 +12,25 @@ from selenium.webdriver.common.actions import interaction
 from selenium.common.exceptions import InvalidElementStateException, WebDriverException
 
 THRESHOLD = 0.99
+WAITTIME_AFTER_DROP = 8
+WAITTIME_AFTER_RESET = 3
+POLLONG_INTERVAL = 1
+WAITTIME_AFTER_ROTATION = 0.5
+_WAITTIME_AFTER_ROTATION = 0.007
+TAP_TIME = 0.01
+RESET_BUTTON_COORDINATES = 200, 1755
+ROTATE_BUTTON_COORDINATES = 500, 1800
+NUM_OF_DELIMITERS = 30
 
 
 def calc_height(img_gray):
     """
-    パターンマッチングで高さ計算
+    Height calculation with pattern matching
     """
     img_gray_height = img_gray[65:129, :]
     dict_digits = {}
     for i in list(range(10))+["dot"]:
-        template = cv2.imread(f"digits/{i}.png", 0)
+        template = cv2.imread(f"images/{i}.png", 0)
         res = cv2.matchTemplate(
             img_gray_height, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= THRESHOLD)
@@ -39,50 +49,31 @@ def calc_height(img_gray):
     return height
 
 
-def check_guruguru(img_gray):
-    """
-    パターンマッチングでぐるぐるを探す
-    """
-    img_gray_guruguru = img_gray[1600:, :]
-    template = cv2.imread("images/guruguru.png", 0)
-    res = cv2.matchTemplate(
-        img_gray_guruguru, template, cv2.TM_CCOEFF_NORMED)
-    # 判定をゆるくする
-    loc = np.where(res >= 0.9)
-    b = len(loc[1]) > 0
-    return b
-
-
 def check_record(img_gray):
     """
-    パターンマッチングで record を探す
+    Confirmation of termination by recognition of record image
     """
-    template = cv2.imread("digits/record.png", 0)
+    template = cv2.imread("images/record.png", 0)
     res = cv2.matchTemplate(
         img_gray, template, cv2.TM_CCOEFF_NORMED)
     loc = np.where(res >= THRESHOLD)
-    b = len(loc[1]) > 0
-    if b:
-        print("ぐるぐるしてる")
+    if len(loc[1]) > 0:
+        return True
     else:
-        print("ぐるぐるしてない")
-        b = check_guruguru(img_gray)
-        if b:
-            print("と思ったらぐるぐるしてる")
-    return b
+        return False
 
 
 class AnimalTower(gym.Env):
     def __init__(self):
-        print("初期化")
+        print("Initializing...", end=" ", flush=True)
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, 64)
+        b = np.linspace(0, 1079, 32)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(512)       # エージェントが取りうる行動空間を定義
+        self.action_space = gym.spaces.Discrete(256)
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=(540, 960))  # エージェントが受け取りうる観測空間を定義
-        self.reward_range = [-1, 1]       # 報酬の範囲[最小値と最大値]を定義
-        self.prev_height = -1  # 初期値変更
+            low=0, high=255, shape=(288, 512))
+        self.reward_range = [-1, 1]
+        self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -93,85 +84,77 @@ class AnimalTower(gym.Env):
         self.operations = ActionChains(self.driver)
         self.operations.w3c_actions = ActionBuilder(
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+        print("Done")
+        print("-"*NUM_OF_DELIMITERS)
 
     def reset(self):
-        print("リセット!!")
-        # リスタートボタンをタップ
-        self._tap(200, 1755)
-        sleep(3)
+        print("Resetting...", end=" ", flush=True)
+        # Tap the Reset button
+        self._tap(RESET_BUTTON_COORDINATES, WAITTIME_AFTER_RESET)
         img_gray = cv2.imread("test.png", 0)
-        # 高さもリセット
-        self.prev_height = calc_height(img_gray)
-        observation = cv2.resize(img_gray, (960, 540))
-        # スタート後の画像を返す
+        img_gray_resized = cv2.resize(img_gray, dsize=(512, 288))
+        observation = img_gray_resized
+        # Returns obs after start
+        print("Done")
         return observation
 
     def step(self, action_index):
-        """
-        1ステップ
-        """
-        self.operations.perform()
+        # Perform Action
+        action = self.ACTION_MAP[action_index]
+        print(
+            f"Action being performed({action[0]:.0f}, {action[1]})...", end=" ", flush=True)
+        for _ in range(int(action[0])):
+            self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
+        sleep(WAITTIME_AFTER_ROTATION)
+        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        print("Done")
+
+        # Generate obs and reward, done flag, and return
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
-        self.prev_height = calc_height(img_gray)
-
-        # actionのようにタップする
-        action = self.ACTION_MAP[action_index]
-        # 回数分タップ
-        for _ in range(int(action[0])):
-            self._tap(500, 1800)
-            # print("回転")
-        self._tap(action[1], 800)
-
-        sleep(1)
-
-        # デフォルトは0
-        reward = 0
-
-        # 報酬を計算
-        for i in range(10):
-            self.operations.perform()
-            self.driver.save_screenshot("test.png")
-            img_gray = cv2.imread("test.png", 0)
-            height = calc_height(img_gray)
-            print(height, self.prev_height)
-            # なんとなく1秒後を観察
-            if i == 0:
-                observation = cv2.resize(img_gray, (960, 540))
-
-            if height is None:
-                # 落ちた
-                if check_record(img_gray):
-                    print("done")
-                    return observation, -1, True, {}
-            # 高さ更新
-            elif height != self.prev_height:
-                if self.prev_height is not None and height > self.prev_height:
-                    reward = 1
-                self.prev_height = height
-                break
-
-            sleep(1)
-            print(f"更新待機中{i}")
-        # 続行
-        return observation, reward, False, {}
+        height = calc_height(img_gray)
+        if check_record(img_gray):
+            observation = cv2.resize(img_gray, dsize=(512, 288))
+            reward = -1
+            done = True
+            print("Game over")
+        else:
+            while height is None:
+                sleep(POLLONG_INTERVAL)
+                self.driver.save_screenshot("test.png")
+                img_gray = cv2.imread("test.png", 0)
+                height = calc_height(img_gray)
+            if height != self.prev_height:
+                observation = cv2.resize(img_gray, dsize=(512, 288))
+                reward = 1
+                done = False
+                print(f"Height update: {height}m")
+            else:
+                observation = cv2.resize(img_gray, dsize=(512, 288))
+                reward = 0
+                done = False
+                print("No height update")
+            self.prev_height = height
+        print(f"return observation, reward({reward}), done({done}), {{}}")
+        print("-"*NUM_OF_DELIMITERS)
+        return observation, reward, done, {}
 
     def render(self):
-        # プレイ画面を返す？
         pass
 
-    def _tap(self, x, y):
+    def _tap(self, coordinates, waittime):
         """
-        タップ
+        Tap
         """
         while True:
             try:
                 self.operations.w3c_actions.pointer_action.move_to_location(
-                    x, y)
+                    coordinates[0], coordinates[1])
                 self.operations.w3c_actions.pointer_action.pointer_down()
-                self.operations.w3c_actions.pointer_action.pause(0.1)
+                self.operations.w3c_actions.pointer_action.pause(TAP_TIME)
                 self.operations.w3c_actions.pointer_action.release()
                 self.operations.perform()
+                sleep(waittime)
                 break
             except InvalidElementStateException:
                 # 座標がオーバーフローしたとき?
