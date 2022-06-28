@@ -107,7 +107,6 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         for i in range(5):
-            self.operations.perform()
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
@@ -127,15 +126,14 @@ class AnimalTower(gym.Env):
         for _ in range(int(action[0])):
             self._tap(500, 1800)
             # print("回転")
+        sleep(1)
         self._tap(action[1], 800)
 
-        sleep(1)
-
-        self.operations.perform()
         self.driver.save_screenshot("test.png")
         img_gray = cv2.imread("test.png", 0)
         height = calc_height(img_gray)
         observation = cv2.resize(img_gray, dsize=(512, 288))
+        
         print(height)
 
         # デフォルトは偽
@@ -145,7 +143,6 @@ class AnimalTower(gym.Env):
 
         # 報酬を計算
         for i in range(10):
-            self.operations.perform()
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
