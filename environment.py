@@ -88,10 +88,10 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, NUM_OF_DIV)
-        self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV)
+        # a = np.linspace(0, 7, 8)
+        # b = np.linspace(0, 1079, NUM_OF_DIV)
+        # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
+        self.action_space = gym.spaces.Discrete(NUM_OF_DIV)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
@@ -124,12 +124,12 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         # Perform Action
-        action = self.ACTION_MAP[action_index]
-        print(f"Action({action[0]:.0f}, {action[1]})")
-        for _ in range(int(action[0])):
-            self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
-        sleep(WAITTIME_AFTER_ROTATION)
-        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        action = np.linspace(0, 1079, NUM_OF_DIV)[action_index]
+        print(f"Action({action})")
+        # for _ in range(int(action[0])):
+        #     self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
+        # sleep(WAITTIME_AFTER_ROTATION)
+        self._tap((action, 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
