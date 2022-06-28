@@ -67,7 +67,10 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        self.action_space = gym.spaces.MultiDiscrete([8, 1080])
+        a = np.linspace(0, 7, 8)
+        b = np.linspace(0, 1079, 32)
+        self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
+        self.action_space = gym.spaces.Discrete(256)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
