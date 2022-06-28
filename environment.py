@@ -69,7 +69,7 @@ class AnimalTower(gym.Env):
         a = np.linspace(0, 7, 8)
         b = np.linspace(0, 1079, NUM_OF_DIV)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV))
+        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
