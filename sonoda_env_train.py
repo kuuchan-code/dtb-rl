@@ -129,8 +129,7 @@ class AnimalTower(gym.Env):
 
     def step(self, action):
         # Perform Action
-        x = np.clip(action, self.act_min, self.act_max)[0] * 1080
-        x.astype(int)
+        x = np.clip(action[0], self.act_min, self.act_max) * 1079
         print(f"Action({x})")
         self._tap((x, 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
@@ -189,4 +188,18 @@ class AnimalTower(gym.Env):
 
 
 if __name__ == "__main__":
-    at = AnimalTower()
+    env = AnimalTower()
+
+    env.reset()
+    done = False
+    total_reward = 0
+    step = 0
+
+    while not done:
+        action = env.action_space.sample()
+        state, reward, done, _ = env.step(action)
+        total_reward += reward
+        step += 1
+    env.close()
+
+    print(f"step: {step}, reward: {total_reward}")
