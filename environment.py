@@ -113,12 +113,12 @@ class AnimalTower(gym.Env):
 
     def reset(self):
         print("Resetting...", end=" ", flush=True)
-        self.prev_height = 0
         # Tap the Reset button
         self._tap(RESET_BUTTON_COORDINATES, WAITTIME_AFTER_RESET)
         self.driver.save_screenshot(SS_NAME)
         img_gray = cv2.imread(SS_NAME, 0)
         img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
+        self.prev_height = get_heght(img_gray)
         observation = img_gray_resized
         # Returns obs after start
         print("Done")
