@@ -96,7 +96,7 @@ class AnimalTower(gym.Env):
         self.action_space = gym.spaces.Discrete(NUM_OF_DIV)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=TRAIN_SIZE[::-1])
-        self.reward_range = [-1, 1]
+        self.reward_range = [-10, 10]
         self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
@@ -145,14 +145,14 @@ class AnimalTower(gym.Env):
                 print("return observation, -1, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, -1, True, {}
+                return observation, -10, True, {}
             elif height != self.prev_height:
                 print(f"Height update: {height}m")
                 print("return observation, 1, False, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 self.prev_height = height
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, 1, False, {}
+                return observation, height, False, {}
             else:
                 pass
             sleep(POLLONG_INTERVAL)
@@ -160,7 +160,7 @@ class AnimalTower(gym.Env):
         print("return observation, 0, False, {}")
         print("-"*NUM_OF_DELIMITERS)
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation, 0, False, {}
+        return observation, height, False, {}
 
     def render(self):
         pass
