@@ -8,7 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
-from selenium.common.exceptions import InvalidElementStateException
+from selenium.common.exceptions import InvalidElementStateException, WebDriverException
 
 THRESHOLD = 0.99
 
@@ -174,4 +174,8 @@ class AnimalTower(gym.Env):
                 self.operations.perform()
                 break
             except InvalidElementStateException:
+                # 座標がオーバーフローしたとき?
                 print("エラー?")
+            except WebDriverException:
+                # 謎
+                print("謎エラー")
