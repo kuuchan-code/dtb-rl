@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from stable_baselines3 import PPO, A2C
 from environment import AnimalTower
 import os

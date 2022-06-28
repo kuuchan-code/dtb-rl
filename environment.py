@@ -12,7 +12,8 @@ from selenium.webdriver.common.actions import interaction
 from selenium.common.exceptions import InvalidElementStateException, WebDriverException
 
 THRESHOLD = 0.99
-WAITTIME_AFTER_DROP = 8
+WAITTIME_AFTER_DROP = 3
+ABOUT_WAITTIME_AFTER_DROP = 3
 WAITTIME_AFTER_RESET = 3
 POLLONG_INTERVAL = 1
 WAITTIME_AFTER_ROTATION = 0.5
@@ -43,10 +44,10 @@ def calc_height(img_gray):
         else:
             height += str(key[1])
     if height:
-        height = float(height)
+        height = height
     else:
-        height = None
-    return height
+        height = 0
+    return float(height)
 
 
 def check_record(img_gray):
@@ -107,12 +108,25 @@ class AnimalTower(gym.Env):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
         self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        for i in range(ABOUT_WAITTIME_AFTER_DROP):
+            self.driver.save_screenshot("test.png")
+            img_gray = cv2.imread("test.png", 0)
+            height = calc_height(img_gray)
+            if height and height > self.prev_height:
+                break
+            if check_record(img_gray):
+                observation = cv2.resize(img_gray, dsize=(512, 288))
+                reward = -1
+                done = True
+                print("Done")
+                print("Game over")
+                print(f"return observation, reward({reward}), done({done}), {{}}")
+                print("-"*NUM_OF_DELIMITERS)
+                return observation, reward, done, {}
+            sleep(1)
         print("Done")
 
         # Generate obs and reward, done flag, and return
-        self.driver.save_screenshot("test.png")
-        img_gray = cv2.imread("test.png", 0)
-        height = calc_height(img_gray)
         if check_record(img_gray):
             observation = cv2.resize(img_gray, dsize=(512, 288))
             reward = -1
