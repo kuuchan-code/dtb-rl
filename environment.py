@@ -98,7 +98,7 @@ class AnimalTower(gym.Env):
     def step(self, action_index):
         # Perform Action
         action = self.ACTION_MAP[action_index]
-        print(f"Action being performed({action[0]:.0f}, {action[1]:.0f})...", end=" ", flush=True)
+        print(f"Action being performed({action[0]:.0f}, {action[1]})...", end=" ", flush=True)
         for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
