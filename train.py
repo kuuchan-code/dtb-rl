@@ -18,5 +18,5 @@ else:
                 tensorboard_log="./a2c_cartpole_tensorboard/")
 # print(model.get_parameters().keys())
 print(model.get_parameters()["policy"])
-model.learn(total_timesteps=5)
+model.learn(total_timesteps=10)
 model.save("test")
