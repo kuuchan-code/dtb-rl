@@ -21,6 +21,7 @@ TAP_TIME = 0.01
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
+TRAIN_SIZE = 512, 288
 
 def calc_height(img_gray):
     """
@@ -41,9 +42,7 @@ def calc_height(img_gray):
             height += "."
         else:
             height += str(key[1])
-    if height:
-        height = height
-    else:
+    if not(height):
         height = 0
     return float(height)
 
@@ -90,7 +89,7 @@ class AnimalTower(gym.Env):
         # Tap the Reset button
         self._tap(RESET_BUTTON_COORDINATES, WAITTIME_AFTER_RESET)
         img_gray = cv2.imread("test.png", 0)
-        img_gray_resized = cv2.resize(img_gray, dsize=(512, 288))
+        img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
         observation = img_gray_resized
         # Returns obs after start
         print("Done")
@@ -99,55 +98,36 @@ class AnimalTower(gym.Env):
     def step(self, action_index):
         # Perform Action
         action = self.ACTION_MAP[action_index]
-        print(f"Action being performed({action[0]:.0f}, {action[1]})...", end=" ", flush=True)
+        print(f"Action({action[0]:.0f}, {action[1]})")
         for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
         self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot("test.png")
             img_gray = cv2.imread("test.png", 0)
             height = calc_height(img_gray)
-            if height and height > self.prev_height:
-                break
+            img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
+            observation = img_gray_resized
             if check_record(img_gray):
-                observation = cv2.resize(img_gray, dsize=(512, 288))
-                reward = -1
-                done = True
-                print("Done")
                 print("Game over")
-                print(f"return observation, reward({reward}), done({done}), {{}}")
+                print("return observation, -1, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
-                return observation, reward, done, {}
-            sleep(1)
-        print("Done")
-
-        # Generate obs and reward, done flag, and return
-        if check_record(img_gray):
-            observation = cv2.resize(img_gray, dsize=(512, 288))
-            reward = -1
-            done = True
-            print("Game over")
-        else:
-            while not(height):
-                sleep(POLLONG_INTERVAL)
-                self.driver.save_screenshot("test.png")
-                img_gray = cv2.imread("test.png", 0)
-                height = calc_height(img_gray)
-            if height != self.prev_height:
-                observation = cv2.resize(img_gray, dsize=(512, 288))
-                reward = 1
-                done = False
+                return observation, -1, True, {}
+            elif height != self.prev_height:
                 print(f"Height update: {height}m")
+                print("return observation, 1, False, {}")
+                print("-"*NUM_OF_DELIMITERS)
+                self.prev_height = height
+                return observation, 1, False, {}
             else:
-                observation = cv2.resize(img_gray, dsize=(512, 288))
-                reward = 0
-                done = False
-                print("No height update")
-            self.prev_height = height
-        print(f"return observation, reward({reward}), done({done}), {{}}")
+                pass
+            sleep(POLLONG_INTERVAL)
+        print("No height update")
+        print("return observation, 0, False, {}")
         print("-"*NUM_OF_DELIMITERS)
-        return observation, reward, done, {}
+        return observation, 0, False, {}
 
 
     def render(self):
