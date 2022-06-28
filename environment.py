@@ -11,10 +11,11 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
 
 THRESHOLD = 0.99
-WAITTIME_AFTER_DROP = 10
-WAITTIME_AFTER_RESET = 1
-WAITTIME_AFTER_ROTATION = 0.1
-POLLONG_INTERVAL = 0.1
+WAITTIME_AFTER_DROP = 8
+WAITTIME_AFTER_RESET = 0.3
+WAITTIME_AFTER_ROTATION = 0.01
+POLLONG_INTERVAL = 1
+TAP_TIME = 0.01
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
@@ -68,7 +69,7 @@ class AnimalTower(gym.Env):
         self.action_space = gym.spaces.Discrete(256)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(288, 512))
         self.reward_range = [-1, 1]
-        self.prev_height = 0
+        self.prev_height = -1
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -80,6 +81,7 @@ class AnimalTower(gym.Env):
         self.operations.w3c_actions = ActionBuilder(
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
         print("Done")
+        print("-"*NUM_OF_DELIMITERS)
 
     def reset(self):
         print("Resetting...", end=" ", flush=True)
@@ -139,7 +141,7 @@ class AnimalTower(gym.Env):
         """
         self.operations.w3c_actions.pointer_action.move_to_location(coordinates[0], coordinates[1])
         self.operations.w3c_actions.pointer_action.pointer_down()
-        self.operations.w3c_actions.pointer_action.pause(0.01)
+        self.operations.w3c_actions.pointer_action.pause(TAP_TIME)
         self.operations.w3c_actions.pointer_action.release()
         self.operations.perform()
         sleep(waittime)
