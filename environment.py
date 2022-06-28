@@ -12,9 +12,10 @@ from selenium.webdriver.common.actions import interaction
 
 THRESHOLD = 0.99
 WAITTIME_AFTER_DROP = 8
-WAITTIME_AFTER_RESET = 0.3
-WAITTIME_AFTER_ROTATION = 0.01
+WAITTIME_AFTER_RESET = 3
 POLLONG_INTERVAL = 1
+WAITTIME_AFTER_ROTATION = 0.5
+_WAITTIME_AFTER_ROTATION = 0.007
 TAP_TIME = 0.01
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
@@ -69,7 +70,7 @@ class AnimalTower(gym.Env):
         self.action_space = gym.spaces.Discrete(256)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(288, 512))
         self.reward_range = [-1, 1]
-        self.prev_height = -1
+        self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
         caps["appium:ensureWebviewsHavePages"] = True
@@ -97,9 +98,12 @@ class AnimalTower(gym.Env):
     def step(self, action_index):
         # Perform Action
         action = self.ACTION_MAP[action_index]
+        print(f"Action being performed({action[0]:int}, {action[1]:int})...", end=" ", flush=True)
         for _ in range(int(action[0])):
-            self._tap(ROTATE_BUTTON_COORDINATES, WAITTIME_AFTER_ROTATION)
+            self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
+        sleep(WAITTIME_AFTER_ROTATION)
         self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        print("Done")
 
         # Generate obs and reward, done flag, and return
         self.driver.save_screenshot("test.png")
