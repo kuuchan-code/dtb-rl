@@ -129,5 +129,7 @@ dmypy.json
 .pyre/
 
 # 追加
-test.png
 res.png
+*.zip
+ss.png
+observation.png
