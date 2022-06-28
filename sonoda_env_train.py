@@ -258,7 +258,7 @@ class PolicyModel(keras.Model):
         # tanhを適用
         actions_squashed = tf.tanh(actions)
 
-        print(mean, stddev, actions, actions_squashed)
+        # print(mean, stddev, actions, actions_squashed)
         # 学習にtanh適用前のactionも欲しいのでそれも返す
         return actions_squashed.numpy()[0], actions.numpy()[0]
 
@@ -347,11 +347,13 @@ if __name__ == "__main__":
 
     model_name = "sonoda_model"
     # モデルを作成もしくは読み込み
-    if os.path.exists(model_name):
-        model = keras.models.load_model(model_name)
-    else:
-        model = PolicyModel(env.action_space)
+    model = PolicyModel(env.action_space)
+    print(model.get_weights())
+    if os.path.exists(model_name + ".index"):
+        a = model.load_weights(model_name)
+        print(a)
     # exit()
+    print(model.get_weights())
 
     # 経験バッファ用
     experiences = []
@@ -360,7 +362,7 @@ if __name__ == "__main__":
     history_metrics = []
     history_rewards = []
 
-    interval = 1
+    interval = 5
     # 学習ループ
     for episode in range(2):
         state = np.asarray(env.reset())
@@ -417,4 +419,5 @@ if __name__ == "__main__":
                 np.mean(history_metrics[-interval:]),
                 max(history_metrics[-interval:]),
             ))
-        model.save(model_name)
+        model.save_weights(model_name)
+        print(model.get_weights())
