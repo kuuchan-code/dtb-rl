@@ -5,5 +5,5 @@ from environment import AnimalTower
 
 model = A2C('MlpPolicy', AnimalTower(), verbose=1, tensorboard_log="./a2c_dtb/")
 # model = PPO('MlpPolicy', AnimalTower(), verbose=1, tensorboard_log="./ppo_dtb/")
-model.learn(total_timesteps=5)
+model.learn(total_timesteps=100)
 model.save("kuu")

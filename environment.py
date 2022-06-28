@@ -11,9 +11,9 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
 
 THRESHOLD = 0.99
-WAITTIME_AFTER_DROP = 3
+WAITTIME_AFTER_DROP = 7
 ABOUT_WAITTIME_AFTER_DROP = 3
-WAITTIME_AFTER_RESET = 3
+WAITTIME_AFTER_RESET = 4
 POLLONG_INTERVAL = 1
 WAITTIME_AFTER_ROTATION = 0.5
 _WAITTIME_AFTER_ROTATION = 0.007
@@ -23,6 +23,7 @@ ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
 TRAIN_WIDTH = 1920
 TRAIN_SIZE = TRAIN_WIDTH, int(TRAIN_WIDTH/1920*1080)
+NUM_OF_DIV = 32
 
 def calc_height(img_gray):
     """
@@ -66,9 +67,9 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, 32)
+        b = np.linspace(0, 1079, NUM_OF_DIV)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(256)
+        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV))
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
@@ -87,6 +88,7 @@ class AnimalTower(gym.Env):
 
     def reset(self):
         print("Resetting...", end=" ", flush=True)
+        self.prev_height = 0
         # Tap the Reset button
         self._tap(RESET_BUTTON_COORDINATES, WAITTIME_AFTER_RESET)
         img_gray = cv2.imread("test.png", 0)
