@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 # https://qiita.com/pocokhc/items/0872539ad9d981847595
+import keras
+import tensorflow as tf
+from keras.layers import Dense
+from keras.optimizers import Adam
 from gym import spaces
 from gym.envs.classic_control.cartpole import CartPoleEnv
 import numpy as np
@@ -84,5 +88,60 @@ class MyCartpole(CartPoleEnv):
         return np.array(self.state), reward, done, {}
 
 
+# 独自のモデルを定義
+class PolicyModel(keras.Model):
+    def __init__(self, action_space):
+        super().__init__()
+
+        # 各レイヤーを定義
+        self.dense1 = Dense(16, activation="relu")
+        self.dense2 = Dense(16, activation="relu")
+        self.pi_mean = Dense(action_space, activation="linear")
+        self.pi_stddev = Dense(action_space, activation="linear")
+
+        # optimizer もついでに定義しておく
+        self.optimizer = Adam(lr=0.01)
+
+    # Forward pass
+    def call(self, inputs, training=False):
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        mean = self.pi_mean(x)
+        stddev = self.pi_stddev(x)
+
+        # σ^2 > 0 になるように変換(指数関数)
+        stddev = tf.exp(stddev)
+
+        return mean, stddev
+
+    # 状態を元にactionを算出
+    def sample_action(self, state):
+        # モデルから平均と分散を取得
+        mean, stddev = self(state.reshape((1, -1)))
+
+        # ガウス分布に従った乱数をだす
+        sampled_action = tf.random.normal(
+            tf.shape(mean), mean=mean, stddev=stddev)
+        return sampled_action.numpy()[0]
+
+
 if __name__ == "__main__":
-    mcp = MyCartpole()
+    with MyCartpole() as env:
+
+        # 出力用にactionの修正値を計算
+        # アクションは-10～10の範囲をとるが、学習は-1～1の範囲と仮定し、
+        # 出力時に-10～10に戻す
+        action_centor = (env.action_space.high + env.action_space.low)/2
+        action_scale = env.action_space.high - action_centor
+
+        # 学習ループ
+        for episode in range(500):
+
+            # 1episode
+            while not done:
+                # アクションを決定
+                action = model.sample_action(state)
+
+                # 1step進める（アクション値を修正して渡す）
+                n_state, reward, done, _ = env.step(
+                    action * action_scale + action_centor)
