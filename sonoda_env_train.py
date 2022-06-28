@@ -271,6 +271,7 @@ def train(model, experiences):
         v_vals.append(r)
     v_vals.reverse()  # 反転して元に戻す
     v_vals = np.asarray(v_vals).reshape((-1, 1))  # 整形
+    print(v_vals)
 
     states = np.asarray([e["state"] for e in experiences])
     action_org = np.asarray([e["action_org"] for e in experiences])
@@ -327,7 +328,7 @@ def env_test():
 
 
 if __name__ == "__main__":
-    env_test()
+    # env_test()
     env = AnimalTower()
 
     action_centor = (env.action_space.high + env.action_space.low)/2
@@ -345,8 +346,9 @@ if __name__ == "__main__":
     history_metrics = []
     history_rewards = []
 
+    interval = 1
     # 学習ループ
-    for episode in range(500):
+    for episode in range(2):
         state = np.asarray(env.reset())
         done = False
         total_reward = 0
@@ -359,9 +361,9 @@ if __name__ == "__main__":
             # アクションを決定
             action, action_org = model.sample_action(state)
 
-            # 1step進める（アクション値を修正して渡す）
-            n_state, reward, done, _ = env.step(
-                action * action_scale + action_centor)
+            # 1step進める
+            # アクションはそのままでいいや
+            n_state, reward, done, _ = env.step(action)
             n_state = np.asarray(n_state)
             total_reward += reward
 
@@ -391,7 +393,6 @@ if __name__ == "__main__":
 
         # 報酬
         history_rewards.append(total_reward)
-        interval = 50
         if episode % interval == 0:
             print("{}: reward {:.1f} {:.1f} {:.1f}, loss {:.1f} {:.1f} {:.1f}".format(
                 episode,
@@ -402,3 +403,4 @@ if __name__ == "__main__":
                 np.mean(history_metrics[-interval:]),
                 max(history_metrics[-interval:]),
             ))
+        model.save("yeah")
