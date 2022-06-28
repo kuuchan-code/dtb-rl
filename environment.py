@@ -138,6 +138,7 @@ class AnimalTower(gym.Env):
             self.driver.save_screenshot(SS_NAME)
             img_gray = cv2.imread(SS_NAME, 0)
             height = get_heght(img_gray)
+            print(height, self.prev_height)
             img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
             observation = img_gray_resized
             if check_record(img_gray):
