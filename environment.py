@@ -21,7 +21,8 @@ TAP_TIME = 0.01
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
-TRAIN_SIZE = 512, 288
+TRAIN_WIDTH = 1024
+TRAIN_SIZE = TRAIN_WIDTH, TRAIN_WIDTH/1920*1080
 
 def calc_height(img_gray):
     """
@@ -68,7 +69,7 @@ class AnimalTower(gym.Env):
         b = np.linspace(0, 1079, 32)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(256)
-        self.observation_space = gym.spaces.Box(low=0, high=255, shape=(288, 512))
+        self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
         caps = {}
