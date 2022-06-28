@@ -21,9 +21,8 @@ TAP_TIME = 0.01
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
-TRAIN_WIDTH = 1920
+TRAIN_WIDTH = 512
 TRAIN_SIZE = TRAIN_WIDTH, int(TRAIN_WIDTH/1920*1080)
-NUM_OF_DIV = 32
 
 def calc_height(img_gray):
     """
@@ -66,10 +65,7 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, NUM_OF_DIV)
-        self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV)
+        self.action_space = gym.spaces.MultiDiscrete([8, 1080])
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
@@ -98,10 +94,9 @@ class AnimalTower(gym.Env):
         print("Done")
         return observation
 
-    def step(self, action_index):
+    def step(self, action):
         # Perform Action
-        action = self.ACTION_MAP[action_index]
-        print(f"Action({action[0]:.0f}, {action[1]})")
+        print(f"Action({action[0]}, {action[1]}")
         for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
