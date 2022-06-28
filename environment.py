@@ -27,7 +27,7 @@ NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
 
-def calc_height(img_gray):
+def get_heght(img_gray):
     """
     Height calculation with pattern matching
     """
@@ -49,6 +49,26 @@ def calc_height(img_gray):
     if not(height):
         height = 0
     return float(height)
+
+
+def get_animal_num(img_gray):
+    img_gray_num = img_gray[264:328, :]
+    cv2.imwrite("tesst.png", img_gray_num)
+    dict_digits = {}
+    for i in list(range(10)):
+        template = cv2.imread(f"images/{i}.png", 0)
+        res = cv2.matchTemplate(
+            img_gray_num, template, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= 80)
+        print(loc,i)
+        for y in loc[1]:
+            dict_digits[y] = i
+    animal_num = ""
+    for key in sorted(dict_digits.items()):
+        animal_num += str(key[1])
+    if not(animal_num):
+        animal_num = 0
+    return int(animal_num)
 
 
 def check_record(img_gray):
@@ -114,7 +134,7 @@ class AnimalTower(gym.Env):
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
             img_gray = cv2.imread(SS_NAME, 0)
-            height = calc_height(img_gray)
+            height = get_heght(img_gray)
             img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
             observation = img_gray_resized
             if check_record(img_gray):
