@@ -24,11 +24,12 @@ ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
 TRAIN_WIDTH = 256
 TRAIN_SIZE = int(TRAIN_WIDTH/1920*1080), TRAIN_WIDTH
+NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
 
 
-def calc_height(img_gray):
+def get_heght(img_gray):
     """
     Height calculation with pattern matching
     """
@@ -52,6 +53,26 @@ def calc_height(img_gray):
     return float(height)
 
 
+def get_animal_num(img_gray):
+    img_gray_num = img_gray[264:328, :]
+    cv2.imwrite("tesst.png", img_gray_num)
+    dict_digits = {}
+    for i in list(range(10)):
+        template = cv2.imread(f"images/{i}.png", 0)
+        res = cv2.matchTemplate(
+            img_gray_num, template, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= 80)
+        print(loc, i)
+        for y in loc[1]:
+            dict_digits[y] = i
+    animal_num = ""
+    for key in sorted(dict_digits.items()):
+        animal_num += str(key[1])
+    if not(animal_num):
+        animal_num = 0
+    return int(animal_num)
+
+
 def check_record(img_gray):
     """
     Confirmation of termination by recognition of record image
@@ -69,7 +90,10 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        self.action_space = gym.spaces.MultiDiscrete([8, 1080])
+        # a = np.linspace(0, 7, 8)
+        # b = np.linspace(0, 1079, NUM_OF_DIV)
+        # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
+        self.action_space = gym.spaces.Discrete(NUM_OF_DIV)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
@@ -101,18 +125,19 @@ class AnimalTower(gym.Env):
         cv2.imwrite(OBSERVATION_NAME, observation)
         return observation
 
-    def step(self, action):
+    def step(self, action_index):
         # Perform Action
-        print(f"Action({action[0]}, {action[1]})")
-        for _ in range(int(action[0])):
-            self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
-        sleep(WAITTIME_AFTER_ROTATION)
-        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        action = np.linspace(0, 1079, NUM_OF_DIV)[action_index]
+        print(f"Action({action})")
+        # for _ in range(int(action[0])):
+        #     self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
+        # sleep(WAITTIME_AFTER_ROTATION)
+        self._tap((action, 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
             img_gray = cv2.imread(SS_NAME, 0)
-            height = calc_height(img_gray)
+            height = get_heght(img_gray)
             img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
             observation = img_gray_resized
             if check_record(img_gray):
