@@ -12,5 +12,5 @@ for i in range(10):
         model = PPO("MlpPolicy", AnimalTower(), verbose=1,
                     tensorboard_log="./ppo_tensorboard/")
     # print(type(model))
-    model.learn(total_timesteps=10_0)
+    model.learn(total_timesteps=100)
     model.save("half")
