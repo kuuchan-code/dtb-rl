@@ -187,7 +187,7 @@ class AnimalTower(gym.Env):
                 print("謎エラー")
 
 
-if __name__ == "__main__":
+def env_test():
     env = AnimalTower()
 
     env.reset()
@@ -203,3 +203,7 @@ if __name__ == "__main__":
     env.close()
 
     print(f"step: {step}, reward: {total_reward}")
+
+
+if __name__ == "__main__":
+    env_test()
