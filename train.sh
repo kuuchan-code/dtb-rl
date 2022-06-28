@@ -1,7 +1,7 @@
 #!/bin/bash
 
-max=100
+max=2
 
 for ((i=0; i<$max; i++)) do
-    echo $i
+    ./train.py
 done

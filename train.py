@@ -16,6 +16,7 @@ if os.path.exists("test.zip"):
 else:
     model = A2C("MlpPolicy", AnimalTower(), verbose=1,
                 tensorboard_log="./a2c_cartpole_tensorboard/")
-print(model.get_parameters())
+# print(model.get_parameters().keys())
+print(model.get_parameters()["policy"])
 model.learn(total_timesteps=5)
 model.save("test")
