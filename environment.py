@@ -23,6 +23,7 @@ ROTATE_BUTTON_COORDINATES = 500, 1800
 NUM_OF_DELIMITERS = 30
 TRAIN_WIDTH = 256
 TRAIN_SIZE = int(TRAIN_WIDTH/1920*1080), TRAIN_WIDTH
+NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
 
@@ -68,9 +69,9 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
         a = np.linspace(0, 7, 8)
-        b = np.linspace(0, 1079, 32)
+        b = np.linspace(0, 1079, NUM_OF_DIV)
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(256)
+        self.action_space = gym.spaces.Discrete(8*NUM_OF_DIV)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
         self.prev_height = 0
@@ -101,9 +102,10 @@ class AnimalTower(gym.Env):
         cv2.imwrite(OBSERVATION_NAME, observation)
         return observation
 
-    def step(self, action):
+    def step(self, action_index):
         # Perform Action
-        print(f"Action({action[0]}, {action[1]})")
+        action = self.ACTION_MAP[action_index]
+        print(f"Action({action[0]:.0f}, {action[1]})")
         for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
