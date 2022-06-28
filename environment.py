@@ -96,7 +96,7 @@ class AnimalTower(gym.Env):
 
     def step(self, action):
         # Perform Action
-        print(f"Action({action[0]}, {action[1]}")
+        print(f"Action({action[0]}, {action[1]})")
         for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
