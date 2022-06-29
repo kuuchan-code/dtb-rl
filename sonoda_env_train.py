@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import traceback
 from tensorflow.python import keras
 from appium import webdriver
 import gym
@@ -112,7 +113,12 @@ class AnimalTower(gym.Env):
         caps["appium:nativeWebScreenshot"] = True
         caps["appium:newCommandTimeout"] = 3600
         caps["appium:connectHardwareKeyboard"] = True
-        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+        try:
+            self.driver = webdriver.Remote(
+                "http://localhost:4723/wd/hub", caps)
+        except WebDriverException as e:
+            print("端末が見つからない?")
+            raise e
         self.operations = ActionChains(self.driver)
         self.operations.w3c_actions = ActionBuilder(
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
