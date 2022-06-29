@@ -128,12 +128,12 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         # Perform Action
-        action = np.linspace(0, 11, 12)[action_index]
-        print(f"Action({action})")
-        for _ in range(int(action)):
+        action = self.ACTION_MAP[action_index]
+        print(f"Action({action[0], action[1]})")
+        for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
-        self._tap(DROP_COORDINATES, WAITTIME_AFTER_DROP)
+        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
