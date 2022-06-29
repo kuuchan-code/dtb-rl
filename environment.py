@@ -92,12 +92,12 @@ class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
         a = [0, 4, 6, 8]
-        b = [100, 540, 979]
+        b = [150, 540, 929]
         self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(12)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
-        self.reward_range = [-1, 1]
+        self.reward_range = [0, 1]
         self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
@@ -143,10 +143,10 @@ class AnimalTower(gym.Env):
             observation = img_gray_resized
             if check_record(img_gray):
                 print("Game over")
-                print("return observation, -1, True, {}")
+                print("return observation, 0, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), -1, True, {}
+                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 0, True, {}
             elif height and height > self.prev_height:
                 print(f"Height update: {height}m")
                 print(f"return observation, 1, False, {{}}")
@@ -158,10 +158,10 @@ class AnimalTower(gym.Env):
                 pass
             sleep(POLLONG_INTERVAL)
         print("No height update")
-        print(f"return observation, 0, False, {{}}")
+        print(f"return observation, 1, False, {{}}")
         print("-"*NUM_OF_DELIMITERS)
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 0, False, {}
+        return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 1, False, {}
 
     def render(self):
         pass
