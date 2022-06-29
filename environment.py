@@ -23,8 +23,8 @@ RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 DROP_COORDINATES = 661.3225806451612, 800
 NUM_OF_DELIMITERS = 36
-TRAIN_WIDTH = 256
-TRAIN_SIZE = int(TRAIN_WIDTH/1920*1080), TRAIN_WIDTH
+TRAIN_HEIGHT = 256
+TRAIN_SIZE = int(TRAIN_HEIGHT/1920*1080), TRAIN_HEIGHT
 # NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
@@ -96,7 +96,7 @@ class AnimalTower(gym.Env):
         # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
         self.action_space = gym.spaces.Discrete(12)
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=TRAIN_SIZE[::-1])
+            low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
         self.reward_range = [-1, 1]
         self.prev_height = 0
         caps = {}
@@ -124,7 +124,7 @@ class AnimalTower(gym.Env):
         # Returns obs after start
         print("Done")
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation
+        return np.reshape(observation, (1, *TRAIN_SIZE[::-1]))
 
     def step(self, action_index):
         # Perform Action
@@ -146,14 +146,14 @@ class AnimalTower(gym.Env):
                 print("return observation, -1, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, -1, True, {}
+                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), -1, True, {}
             elif height and height > self.prev_height:
                 print(f"Height update: {height}m")
                 print(f"return observation, 1, False, {{}}")
                 print("-"*NUM_OF_DELIMITERS)
                 self.prev_height = height
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, 1, False, {}
+                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 1, False, {}
             else:
                 pass
             sleep(POLLONG_INTERVAL)
@@ -161,7 +161,7 @@ class AnimalTower(gym.Env):
         print(f"return observation, 0, False, {{}}")
         print("-"*NUM_OF_DELIMITERS)
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation, 0, False, {}
+        return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 0, False, {}
 
     def render(self):
         pass
