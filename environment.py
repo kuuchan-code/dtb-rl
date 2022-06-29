@@ -12,8 +12,8 @@ from selenium.webdriver.common.actions import interaction
 from selenium.common.exceptions import InvalidElementStateException, WebDriverException
 
 THRESHOLD = 0.99
-WAITTIME_AFTER_DROP = 2
-ABOUT_WAITTIME_AFTER_DROP = 10
+WAITTIME_AFTER_DROP = 4
+ABOUT_WAITTIME_AFTER_DROP = 7
 WAITTIME_AFTER_RESET = 7
 POLLONG_INTERVAL = 1
 WAITTIME_AFTER_ROTATION = 0.5
