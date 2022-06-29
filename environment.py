@@ -14,7 +14,7 @@ from selenium.common.exceptions import InvalidElementStateException, WebDriverEx
 THRESHOLD = 0.99
 WAITTIME_AFTER_DROP = 4
 ABOUT_WAITTIME_AFTER_DROP = 7
-WAITTIME_AFTER_RESET = 7
+WAITTIME_AFTER_RESET = 5
 POLLONG_INTERVAL = 1
 WAITTIME_AFTER_ROTATION = 0.5
 _WAITTIME_AFTER_ROTATION = 0.005
@@ -94,7 +94,7 @@ class AnimalTower(gym.Env):
         # a = np.linspace(0, 7, 8)
         # b = np.linspace(0, 1079, NUM_OF_DIV)
         # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(8)
+        self.action_space = gym.spaces.Discrete(12)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=TRAIN_SIZE[::-1])
         self.reward_range = [-1, 1]
@@ -128,7 +128,7 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         # Perform Action
-        action = np.linspace(0, 7, 8)[action_index]
+        action = np.linspace(0, 11, 12)[action_index]
         print(f"Action({action})")
         for _ in range(int(action)):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
