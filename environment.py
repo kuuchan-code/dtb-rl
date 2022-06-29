@@ -146,7 +146,7 @@ class AnimalTower(gym.Env):
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
                 return observation, -10, True, {}
-            elif height and height != self.prev_height:
+            elif height and height > self.prev_height:
                 print(f"Height update: {height}m")
                 print("return observation, 1, False, {}")
                 print("-"*NUM_OF_DELIMITERS)
