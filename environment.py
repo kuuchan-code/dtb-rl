@@ -21,10 +21,11 @@ _WAITTIME_AFTER_ROTATION = 0.005
 TAP_TIME = 0.001
 RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
-NUM_OF_DELIMITERS = 30
+DROP_COORDINATES = 661.3225806451612, 800
+NUM_OF_DELIMITERS = 36
 TRAIN_WIDTH = 256
 TRAIN_SIZE = int(TRAIN_WIDTH/1920*1080), TRAIN_WIDTH
-NUM_OF_DIV = 32
+# NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
 
@@ -93,10 +94,10 @@ class AnimalTower(gym.Env):
         # a = np.linspace(0, 7, 8)
         # b = np.linspace(0, 1079, NUM_OF_DIV)
         # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(NUM_OF_DIV)
+        self.action_space = gym.spaces.Discrete(8)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=TRAIN_SIZE[::-1])
-        self.reward_range = [-10, 10]
+        self.reward_range = [-1, 1]
         self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
@@ -127,12 +128,12 @@ class AnimalTower(gym.Env):
 
     def step(self, action_index):
         # Perform Action
-        action = np.linspace(0, 1079, NUM_OF_DIV)[action_index]
+        action = np.linspace(0, 7, 8)[action_index]
         print(f"Action({action})")
-        # for _ in range(int(action[0])):
-        #     self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
-        # sleep(WAITTIME_AFTER_ROTATION)
-        self._tap((action, 800), WAITTIME_AFTER_DROP)
+        for _ in range(int(action)):
+            self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
+        sleep(WAITTIME_AFTER_ROTATION)
+        self._tap(DROP_COORDINATES, WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
@@ -146,22 +147,22 @@ class AnimalTower(gym.Env):
                 print("return observation, -1, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, -10, True, {}
-            elif height != self.prev_height:
+                return observation, -1, True, {}
+            elif height and height > self.prev_height:
                 print(f"Height update: {height}m")
-                print("return observation, 1, False, {}")
+                print(f"return observation, 1, False, {{}}")
                 print("-"*NUM_OF_DELIMITERS)
                 self.prev_height = height
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, height, False, {}
+                return observation, 1, False, {}
             else:
                 pass
             sleep(POLLONG_INTERVAL)
         print("No height update")
-        print("return observation, 0, False, {}")
+        print(f"return observation, 0, False, {{}}")
         print("-"*NUM_OF_DELIMITERS)
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation, height, False, {}
+        return observation, 0, False, {}
 
     def render(self):
         pass
