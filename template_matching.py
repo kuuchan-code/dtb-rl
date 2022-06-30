@@ -3,11 +3,11 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-THRESHOLD = 0.9
+THRESHOLD = 0.95
 # 背景色 (bgr)
 BACKGROUND_COLOR = np.array([251, 208, 49])
 BACKGROUND_COLOR_LIGHT = BACKGROUND_COLOR + 4
-BACKGROUND_COLOR_DARK = BACKGROUND_COLOR - 10
+BACKGROUND_COLOR_DARK = BACKGROUND_COLOR - 4
 WHITE = np.array([255, 255, 255])
 WHITE_DARK = WHITE - 15
 BLACK = np.array([0, 0, 0])
@@ -26,7 +26,7 @@ def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
     return result
 
 
-img_bgr = cv2.imread("sonoda/num5.png")
+img_bgr = cv2.imread("sonoda/num0_cloud.png")
 # 動物の数の部分
 img_bgr = img_bgr[260:330, 0:300, :]
 
@@ -34,7 +34,6 @@ fig = plt.figure(figsize=(8, 5))
 ax = fig.add_subplot(3, 4, 1)
 ax.imshow(img_bgr[:, :, ::-1])
 ax.axis("off")
-
 
 # ごにょごにょ
 img_bgr = bgr_extraction(
