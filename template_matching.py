@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 
 THRESHOLD = 0.95
 # 背景色 (bgr)
-BACKGROUND_COLOR = np.array([251, 208, 49])
+BACKGROUND_COLOR = np.array([251, 208, 49], dtype=np.uint8)
 BACKGROUND_COLOR_LIGHT = BACKGROUND_COLOR + 4
 BACKGROUND_COLOR_DARK = BACKGROUND_COLOR - 4
-WHITE = np.array([255, 255, 255])
+BLACK = np.zeros(3, dtype=np.uint8)
+WHITE = BLACK + 255
 WHITE_DARK = WHITE - 15
-BLACK = np.zeros(3, dtype=int)
 
 
 def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
@@ -29,6 +29,7 @@ def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
 def counter_shadow_extraction(image):
     """
     数値の影抽出
+    もっと簡単にできなかったか...
     """
     img_mask = cv2.bitwise_not(cv2.inRange(
         image, BACKGROUND_COLOR_LIGHT, WHITE_DARK))
@@ -37,7 +38,8 @@ def counter_shadow_extraction(image):
         image, BACKGROUND_COLOR_DARK, WHITE)
     )
     result = cv2.bitwise_not(cv2.bitwise_and(result, result, mask=img_mask))
-    return result
+    img_mask = cv2.bitwise_not(cv2.inRange(result, BLACK, WHITE - 1))
+    return cv2.bitwise_and(result, result, mask=img_mask)
 
 
 img_bgr = cv2.imread("sonoda/num0_cloud.png")
