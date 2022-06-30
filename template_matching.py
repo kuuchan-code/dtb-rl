@@ -13,7 +13,7 @@ WHITE_DARK = np.array([230, 230, 230])
 BLACK = np.array([0, 0, 0])
 
 # img_bgr = cv2.imread("samples/5.88.png")
-img_bgr = cv2.imread("sonoda/num10_cloud.png")
+img_bgr = cv2.imread("sonoda/num2_cloud.png")
 img_bgr = img_bgr[260:330, 0:300, :]
 
 fig = plt.figure(figsize=(8, 5))
@@ -39,6 +39,7 @@ img_bgr = bgr_extraction(
     img_bgr, WHITE_DARK, BACKGROUND_COLOR_LIGHT, inverse=True)
 img_bgr = bgr_extraction(img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
 img_bgr = cv2.bitwise_not(img_bgr)
+img_bgr = bgr_extraction(img_bgr, BLACK, WHITE - 1, inverse=True)
 ax = fig.add_subplot(3, 4, 2)
 ax.imshow(img_bgr[:, :, ::-1])
 
