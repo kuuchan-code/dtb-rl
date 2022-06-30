@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 THRESHOLD = 0.99
 
 # img_bgr = cv2.imread("samples/5.88.png")
-img_bgr = cv2.imread("sonoda/num0.png")
+img_bgr = cv2.imread("sonoda/num18.png")
 img_bgr = img_bgr[260:330, 0:300, :]
 
 fig = plt.figure(figsize=(8, 5))
