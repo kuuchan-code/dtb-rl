@@ -8,7 +8,7 @@ env = AnimalTower()
 model = PPO.load(path="ppo_logs/rotete_move_12_3200_steps", env=env)
 
 obs = env.reset()
-for i in range(1000):
+for i in range(50):
     action, _states = model.predict(obs, deterministic=True)
     obs, reward, done, info = env.step(action)
     env.render()
