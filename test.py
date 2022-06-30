@@ -5,7 +5,7 @@ from environment import AnimalTower
 env = AnimalTower()
 
 # pathを指定して任意の重みをロードする
-model = PPO.load(path="ppo_logs/rotate_500_steps", env=env)
+model = PPO.load(path="ppo_logs/rotate_600_steps", env=env)
 
 obs = env.reset()
 for i in range(50):
