@@ -4,18 +4,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 THRESHOLD = 0.99
+# 背景色 (bgr)
+BACKGROUND_COLOR = np.array([255, 208, 49])
 
 # img_bgr = cv2.imread("samples/5.88.png")
 img_bgr = cv2.imread("sonoda/num18.png")
 img_bgr = img_bgr[260:330, 0:300, :]
 
 fig = plt.figure(figsize=(8, 5))
+
+
+def bgrExtraction(image, bgr_lower, bgr_upper):
+    """
+    BGRで特定の色を抽出する関数
+    """
+    img_mask = cv2.inRange(image, bgr_lower, bgr_upper)  # BGRからマスクを作成
+    result = cv2.bitwise_and(image, image, mask=img_mask)  # 元画像とマスクを合成
+    print(result)
+    return result
+
+
+# print(img_bgr)
 ax = fig.add_subplot(3, 4, 1)
+ax.imshow(img_bgr[:, :, ::-1])
+img_bgr = bgrExtraction(img_bgr, BACKGROUND_COLOR, BACKGROUND_COLOR)
+ax = fig.add_subplot(3, 4, 2)
 ax.imshow(img_bgr[:, :, ::-1])
 
 img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
-idx = 2
+idx = 3
 
 dict_digits = {}
 for i in list(range(10)):
