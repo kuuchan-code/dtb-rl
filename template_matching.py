@@ -6,17 +6,11 @@ import matplotlib.pyplot as plt
 THRESHOLD = 0.99
 # 背景色 (bgr)
 BACKGROUND_COLOR = np.array([251, 208, 49])
-BACKGROUND_COLOR_LIGHT = np.array([255, 212, 53])
-BACKGROUND_COLOR_DARK = np.array([241, 198, 39])
+BACKGROUND_COLOR_LIGHT = BACKGROUND_COLOR + 4
+BACKGROUND_COLOR_DARK = BACKGROUND_COLOR - 10
 WHITE = np.array([255, 255, 255])
-WHITE_DARK = np.array([230, 230, 230])
+WHITE_DARK = WHITE - 15
 BLACK = np.array([0, 0, 0])
-
-# img_bgr = cv2.imread("samples/5.88.png")
-img_bgr = cv2.imread("sonoda/num2_cloud.png")
-img_bgr = img_bgr[260:330, 0:300, :]
-
-fig = plt.figure(figsize=(8, 5))
 
 
 def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
@@ -32,40 +26,48 @@ def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
     return result
 
 
+# img_bgr = cv2.imread("samples/5.88.png")
+# img_bgr = img_bgr[260:330, 0:300, :]
+
+# fig = plt.figure(figsize=(8, 5))
+# ax = fig.add_subplot(3, 4, 1)
+# ax.imshow(img_bgr[:, :, ::-1])
+
+
 # print(img_bgr)
-ax = fig.add_subplot(3, 4, 1)
-ax.imshow(img_bgr[:, :, ::-1])
-img_bgr = bgr_extraction(
-    img_bgr, WHITE_DARK, BACKGROUND_COLOR_LIGHT, inverse=True)
-img_bgr = bgr_extraction(img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
-img_bgr = cv2.bitwise_not(img_bgr)
-img_bgr = bgr_extraction(img_bgr, BLACK, WHITE - 1, inverse=True)
-ax = fig.add_subplot(3, 4, 2)
-ax.imshow(img_bgr[:, :, ::-1])
+for i in range(10):
+    img_bgr = cv2.imread(f"images/count{i}.png")
+    img_bgr = bgr_extraction(
+        img_bgr, WHITE_DARK, BACKGROUND_COLOR_LIGHT, inverse=True)
+    img_bgr = bgr_extraction(
+        img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
+    img_bgr = cv2.bitwise_not(img_bgr)
+    img_bgr = bgr_extraction(img_bgr, BLACK, WHITE - 1, inverse=True)
+    cv2.imwrite(f"images/count{i}_shadow.png", img_bgr)
 
-img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+# img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
-idx = 3
+# idx = 3
 
-dict_digits = {}
-for i in list(range(10)):
-    template = cv2.imread(f"images/count{i}.png", 0)
-    w, h = template.shape[::-1]
-    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    ax = fig.add_subplot(3, 4, idx)
-    ax.imshow(res)
-    ax.axis("off")
-    idx += 1
-    loc = np.where(res >= THRESHOLD)
-    for y in loc[1]:
-        dict_digits[y] = i
-    for pt in zip(*loc[::-1]):
-        cv2.rectangle(img_bgr, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-cv2.imwrite('res.png', img_bgr)
+# dict_digits = {}
+# for i in list(range(10)):
+#     template = cv2.imread(f"images/count{i}.png", 0)
+#     w, h = template.shape[::-1]
+#     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+#     ax = fig.add_subplot(3, 4, idx)
+#     ax.imshow(res)
+#     ax.axis("off")
+#     idx += 1
+#     loc = np.where(res >= THRESHOLD)
+#     for y in loc[1]:
+#         dict_digits[y] = i
+#     for pt in zip(*loc[::-1]):
+#         cv2.rectangle(img_bgr, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+# cv2.imwrite('res.png', img_bgr)
 
-height = ""
-for key in sorted(dict_digits.items()):
-    height += str(key[1])
+# height = ""
+# for key in sorted(dict_digits.items()):
+#     height += str(key[1])
 
-print(height)
-plt.show()
+# print(height)
+# plt.show()
