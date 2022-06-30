@@ -129,9 +129,8 @@ class AnimalTower(gym.Env):
         cv2.imwrite(OBSERVATION_NAME, observation)
         return np.reshape(observation, (1, *TRAIN_SIZE[::-1]))
 
-    def step(self, action_index):
+    def step(self, action):
         # Perform Action
-        action = self.ACTION_MAP[action_index]
         print(f"Action({action:.0f})")
         for _ in range(int(action)):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
