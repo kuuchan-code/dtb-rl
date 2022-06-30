@@ -13,7 +13,7 @@ WHITE = BLACK + 255
 WHITE_DARK = WHITE - 15
 
 
-def counter_shadow_extraction(image):
+def counter_shadow_extraction(image: np.ndarray) -> np.ndarray:
     """
     数値の影抽出
     もっと簡単にできなかったか...
@@ -29,7 +29,13 @@ def counter_shadow_extraction(image):
     return cv2.cvtColor(cv2.bitwise_and(result, result, mask=img_mask), cv2.COLOR_BGR2GRAY)
 
 
-img_bgr = cv2.imread("sonoda/num10_cloud.png")
+# for i in range(10):
+#     img_bgr = cv2.imread(f"images/count{i}.png")
+#     img_shadow = counter_shadow_extraction(img_bgr)
+#     cv2.imwrite(f"images/count{i}_shadow2.png", img_shadow)
+# exit()
+
+img_bgr = cv2.imread("sonoda/num16.png")
 # 動物の数の部分
 img_bgr = img_bgr[260:330, 0:300, :]
 
@@ -38,13 +44,6 @@ ax = fig.add_subplot(3, 4, 1)
 ax.imshow(img_bgr[:, :, ::-1])
 ax.axis("off")
 
-# ごにょごにょ
-# img_bgr = bgr_extraction(
-#     img_bgr, WHITE_DARK, BACKGROUND_COLOR_LIGHT, inverse=True)
-# img_bgr = bgr_extraction(
-#     img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
-# img_bgr = cv2.bitwise_not(img_bgr)
-# img_bgr = bgr_extraction(img_bgr, BLACK, WHITE - 1, inverse=True)
 img_gray = counter_shadow_extraction(img_bgr)
 
 
@@ -57,7 +56,7 @@ idx = 3
 
 dict_digits = {}
 for i in list(range(10)):
-    template = cv2.imread(f"images/count{i}_shadow.png", 0)
+    template = cv2.imread(f"images/count{i}_shadow2.png", 0)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     ax = fig.add_subplot(3, 4, idx)
