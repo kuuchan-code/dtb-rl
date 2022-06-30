@@ -29,11 +29,11 @@ def counter_shadow_extraction(image: np.ndarray) -> np.ndarray:
     return cv2.cvtColor(cv2.bitwise_and(result, result, mask=img_mask), cv2.COLOR_BGR2GRAY)
 
 
-# for i in range(10):
-#     img_bgr = cv2.imread(f"images/count{i}.png")
-#     img_shadow = counter_shadow_extraction(img_bgr)
-#     cv2.imwrite(f"images/count{i}_shadow2.png", img_shadow)
-# exit()
+for i in range(10):
+    img_bgr = cv2.imread(f"images/count{i}.png")
+    img_shadow = counter_shadow_extraction(img_bgr)
+    cv2.imwrite(f"images/count{i}_shadow.png", img_shadow)
+exit()
 
 img_bgr = cv2.imread("sonoda/num16.png")
 # 動物の数の部分
