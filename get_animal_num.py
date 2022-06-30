@@ -19,7 +19,8 @@ def get_animal_num(img_bgr: np.ndarray) -> int:
     """
     img_shadow = cv2.inRange(
         img_bgr[264:328], BACKGROUND_COLOR_DARK, WHITE)
-    cv2.imwrite("ttest.png", img_shadow)
+    # print(img_shadow.shape)
+    # cv2.imwrite("ttest.png", img_shadow)
     dict_digits = {}
     for i in list(range(10)):
         template = cv2.imread(f"images/count{i}_shadow.png", 0)
