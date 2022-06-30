@@ -29,6 +29,24 @@ TRAIN_SIZE = int(TRAIN_HEIGHT/1920*1080), TRAIN_HEIGHT
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
 
+caps = {}
+caps["platformName"] = "android"
+caps["appium:ensureWebviewsHavePages"] = True
+caps["appium:nativeWebScreenshot"] = True
+caps["appium:newCommandTimeout"] = 3600
+caps["appium:connectHardwareKeyboard"] = True
+try:
+    # グローバル変数として定義
+    DRIVER = webdriver.Remote(
+        "http://localhost:4723/wd/hub", caps)
+
+    OPERATIONS = ActionChains(DRIVER)
+    OPERATIONS.w3c_actions = ActionBuilder(
+        DRIVER, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+except WebDriverException as e:
+    print("端末に接続できない???")
+    raise e
+
 
 def get_heght(img_gray):
     """
@@ -99,22 +117,7 @@ class AnimalTower(gym.Env):
             low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
         self.reward_range = [0, 1]
         self.prev_height = 0
-        caps = {}
-        caps["platformName"] = "android"
-        caps["appium:ensureWebviewsHavePages"] = True
-        caps["appium:nativeWebScreenshot"] = True
-        caps["appium:newCommandTimeout"] = 3600
-        caps["appium:connectHardwareKeyboard"] = True
-        try:
-            self.driver = webdriver.Remote(
-                "http://localhost:4723/wd/hub", caps)
-        except WebDriverException as e:
-            print("端末に接続できない???")
-            raise e
 
-        self.operations = ActionChains(self.driver)
-        self.operations.w3c_actions = ActionBuilder(
-            self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
         print("Done")
         print("-"*NUM_OF_DELIMITERS)
 
@@ -122,7 +125,7 @@ class AnimalTower(gym.Env):
         print("Resetting...", end=" ", flush=True)
         # Tap the Reset button
         self._tap(RESET_BUTTON_COORDINATES, WAITTIME_AFTER_RESET)
-        self.driver.save_screenshot(SS_NAME)
+        DRIVER.save_screenshot(SS_NAME)
         img_gray = cv2.imread(SS_NAME, 0)
         img_gray_resized = cv2.resize(img_gray, dsize=TRAIN_SIZE)
         self.prev_height = get_heght(img_gray)
@@ -142,7 +145,7 @@ class AnimalTower(gym.Env):
         self._tap((action[1], 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
-            self.driver.save_screenshot(SS_NAME)
+            DRIVER.save_screenshot(SS_NAME)
             img_gray = cv2.imread(SS_NAME, 0)
             height = get_heght(img_gray)
             print(height, self.prev_height)
@@ -179,12 +182,12 @@ class AnimalTower(gym.Env):
         """
         while True:
             try:
-                self.operations.w3c_actions.pointer_action.move_to_location(
+                OPERATIONS.w3c_actions.pointer_action.move_to_location(
                     coordinates[0], coordinates[1])
-                self.operations.w3c_actions.pointer_action.pointer_down()
-                self.operations.w3c_actions.pointer_action.pause(TAP_TIME)
-                self.operations.w3c_actions.pointer_action.release()
-                self.operations.perform()
+                OPERATIONS.w3c_actions.pointer_action.pointer_down()
+                OPERATIONS.w3c_actions.pointer_action.pause(TAP_TIME)
+                OPERATIONS.w3c_actions.pointer_action.release()
+                OPERATIONS.perform()
                 sleep(waittime)
                 break
             except InvalidElementStateException:
