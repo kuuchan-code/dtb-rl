@@ -91,7 +91,7 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        self.action_space = gym.spaces.Discrete(8)
+        self.action_space = gym.spaces.Discrete(12)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
         self.reward_range = [0, 1]
