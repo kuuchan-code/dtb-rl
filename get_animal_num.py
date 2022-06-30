@@ -39,6 +39,6 @@ def get_animal_num(img_bgr: np.ndarray) -> int:
 
 if __name__ == "__main__":
     # 試したい画像を入れてみる
-    img_bgr = cv2.imread("sonoda/num0_cloud.png")
+    img_bgr = cv2.imread("sonoda/num2_cloud.png")
     n = get_animal_num(img_bgr)
     print(n)
