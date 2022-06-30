@@ -5,29 +5,40 @@ import matplotlib.pyplot as plt
 
 THRESHOLD = 0.99
 # 背景色 (bgr)
-BACKGROUND_COLOR = np.array([255, 208, 49])
+BACKGROUND_COLOR = np.array([251, 208, 49])
+BACKGROUND_COLOR_LIGHT = np.array([255, 212, 53])
+BACKGROUND_COLOR_DARK = np.array([241, 198, 39])
+WHITE = np.array([255, 255, 255])
+WHITE_DARK = np.array([230, 230, 230])
+BLACK = np.array([0, 0, 0])
 
 # img_bgr = cv2.imread("samples/5.88.png")
-img_bgr = cv2.imread("sonoda/num18.png")
+img_bgr = cv2.imread("sonoda/num10_cloud.png")
 img_bgr = img_bgr[260:330, 0:300, :]
 
 fig = plt.figure(figsize=(8, 5))
 
 
-def bgrExtraction(image, bgr_lower, bgr_upper):
+def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
     """
     BGRで特定の色を抽出する関数
     """
+    # cv2.bitwise_not()
     img_mask = cv2.inRange(image, bgr_lower, bgr_upper)  # BGRからマスクを作成
+    if inverse:
+        img_mask = cv2.bitwise_not(img_mask)
     result = cv2.bitwise_and(image, image, mask=img_mask)  # 元画像とマスクを合成
-    print(result)
+    # print(result)
     return result
 
 
 # print(img_bgr)
 ax = fig.add_subplot(3, 4, 1)
 ax.imshow(img_bgr[:, :, ::-1])
-img_bgr = bgrExtraction(img_bgr, BACKGROUND_COLOR, BACKGROUND_COLOR)
+img_bgr = bgr_extraction(
+    img_bgr, WHITE_DARK, BACKGROUND_COLOR_LIGHT, inverse=True)
+img_bgr = bgr_extraction(img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
+img_bgr = cv2.bitwise_not(img_bgr)
 ax = fig.add_subplot(3, 4, 2)
 ax.imshow(img_bgr[:, :, ::-1])
 
