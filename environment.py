@@ -91,10 +91,7 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        a = [0, 4, 6, 8]
-        b = [150, 540, 929]
-        self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(12)
+        self.action_space = gym.spaces.Discrete(8)
         self.observation_space = gym.spaces.Box(
             low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
         self.reward_range = [0, 1]
@@ -135,11 +132,11 @@ class AnimalTower(gym.Env):
     def step(self, action_index):
         # Perform Action
         action = self.ACTION_MAP[action_index]
-        print(f"Action({action[0], action[1]})")
-        for _ in range(int(action[0])):
+        print(f"Action({action:.0f})")
+        for _ in range(int(action)):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
-        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
+        self._tap((540, 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
