@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from environment import AnimalTower
-# import os
+from stable_baselines3.common.callbacks import CheckpointCallback
 
-# model = A2C.load("kuu", AnimalTower(), tensorboard_log="./a2c_dtb/")
-model = A2C('MlpPolicy', AnimalTower(), verbose=1, tensorboard_log="./a2c_dtb/")
-model.learn(total_timesteps=100)
-model.save("kuu")
+env = AnimalTower()
+model = PPO.load(path="ppo_logs/rotete_move_12_3200_steps", env=env, tensorboard_log="./a2c_dtb/")
+# model = PPO(policy='CnnPolicy', env=env,
+#             verbose=1, tensorboard_log="./ppo_tf/")
+checkpoint_callback = CheckpointCallback(save_freq=5, save_path='./ppo_logs/',
+                                         name_prefix='rotete_move_12')
+model.learn(total_timesteps=10, callback=[checkpoint_callback])

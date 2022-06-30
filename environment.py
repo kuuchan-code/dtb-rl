@@ -12,9 +12,9 @@ from selenium.webdriver.common.actions import interaction
 from selenium.common.exceptions import InvalidElementStateException, WebDriverException
 
 THRESHOLD = 0.99
-WAITTIME_AFTER_DROP = 7
-ABOUT_WAITTIME_AFTER_DROP = 3
-WAITTIME_AFTER_RESET = 7
+WAITTIME_AFTER_DROP = 4
+ABOUT_WAITTIME_AFTER_DROP = 6
+WAITTIME_AFTER_RESET = 5
 POLLONG_INTERVAL = 1
 WAITTIME_AFTER_ROTATION = 0.5
 _WAITTIME_AFTER_ROTATION = 0.005
@@ -23,8 +23,8 @@ RESET_BUTTON_COORDINATES = 200, 1755
 ROTATE_BUTTON_COORDINATES = 500, 1800
 DROP_COORDINATES = 661.3225806451612, 800
 NUM_OF_DELIMITERS = 36
-TRAIN_WIDTH = 256
-TRAIN_SIZE = int(TRAIN_WIDTH/1920*1080), TRAIN_WIDTH
+TRAIN_HEIGHT = 256
+TRAIN_SIZE = int(TRAIN_HEIGHT/1920*1080), TRAIN_HEIGHT
 # NUM_OF_DIV = 32
 SS_NAME = "ss.png"
 OBSERVATION_NAME = "observation.png"
@@ -91,13 +91,13 @@ def check_record(img_gray):
 class AnimalTower(gym.Env):
     def __init__(self):
         print("Initializing...", end=" ", flush=True)
-        # a = np.linspace(0, 7, 8)
-        # b = np.linspace(0, 1079, NUM_OF_DIV)
-        # self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
-        self.action_space = gym.spaces.Discrete(8)
+        a = [0, 4, 6, 8]
+        b = [150, 540, 929]
+        self.ACTION_MAP = np.array([v for v in itertools.product(a, b)])
+        self.action_space = gym.spaces.Discrete(12)
         self.observation_space = gym.spaces.Box(
-            low=0, high=255, shape=TRAIN_SIZE[::-1])
-        self.reward_range = [-1, 1]
+            low=0, high=255, shape=(1, *TRAIN_SIZE[::-1]), dtype=np.uint8)
+        self.reward_range = [0, 1]
         self.prev_height = 0
         caps = {}
         caps["platformName"] = "android"
@@ -105,7 +105,13 @@ class AnimalTower(gym.Env):
         caps["appium:nativeWebScreenshot"] = True
         caps["appium:newCommandTimeout"] = 3600
         caps["appium:connectHardwareKeyboard"] = True
-        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+        try:
+            self.driver = webdriver.Remote(
+                "http://localhost:4723/wd/hub", caps)
+        except WebDriverException as e:
+            print("端末に接続できない???")
+            raise e
+
         self.operations = ActionChains(self.driver)
         self.operations.w3c_actions = ActionBuilder(
             self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
@@ -124,16 +130,16 @@ class AnimalTower(gym.Env):
         # Returns obs after start
         print("Done")
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation
+        return np.reshape(observation, (1, *TRAIN_SIZE[::-1]))
 
     def step(self, action_index):
         # Perform Action
-        action = np.linspace(0, 7, 8)[action_index]
-        print(f"Action({action})")
-        for _ in range(int(action)):
+        action = self.ACTION_MAP[action_index]
+        print(f"Action({action[0], action[1]})")
+        for _ in range(int(action[0])):
             self._tap(ROTATE_BUTTON_COORDINATES, _WAITTIME_AFTER_ROTATION)
         sleep(WAITTIME_AFTER_ROTATION)
-        self._tap(DROP_COORDINATES, WAITTIME_AFTER_DROP)
+        self._tap((action[1], 800), WAITTIME_AFTER_DROP)
         # Generate obs and reward, done flag, and return
         for i in range(ABOUT_WAITTIME_AFTER_DROP):
             self.driver.save_screenshot(SS_NAME)
@@ -144,25 +150,25 @@ class AnimalTower(gym.Env):
             observation = img_gray_resized
             if check_record(img_gray):
                 print("Game over")
-                print("return observation, -1, True, {}")
+                print("return observation, 0, True, {}")
                 print("-"*NUM_OF_DELIMITERS)
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, -1, True, {}
+                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 0, True, {}
             elif height and height > self.prev_height:
                 print(f"Height update: {height}m")
                 print(f"return observation, 1, False, {{}}")
                 print("-"*NUM_OF_DELIMITERS)
                 self.prev_height = height
                 cv2.imwrite(OBSERVATION_NAME, observation)
-                return observation, 1, False, {}
+                return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 1, False, {}
             else:
                 pass
             sleep(POLLONG_INTERVAL)
         print("No height update")
-        print(f"return observation, 0, False, {{}}")
+        print(f"return observation, 1, False, {{}}")
         print("-"*NUM_OF_DELIMITERS)
         cv2.imwrite(OBSERVATION_NAME, observation)
-        return observation, 0, False, {}
+        return np.reshape(observation, (1, *TRAIN_SIZE[::-1])), 1, False, {}
 
     def render(self):
         pass
@@ -184,6 +190,7 @@ class AnimalTower(gym.Env):
             except InvalidElementStateException:
                 # 座標がオーバーフローしたとき?
                 print("エラー?")
-            except WebDriverException:
+            except WebDriverException as e:
                 # 謎
                 print("謎エラー")
+                raise e

@@ -1,0 +1,1465 @@
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((4, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 540))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((8, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((6, 929))
+No height update
+return observation, 1, False, {}
+------------------------------------
+Action((0, 150))
+No height update
+return observation, 1, False, {}
+------------------------------------
+
