@@ -13,19 +13,6 @@ WHITE = BLACK + 255
 WHITE_DARK = WHITE - 15
 
 
-def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
-    """
-    BGRで特定の色を抽出する関数
-    """
-    # cv2.bitwise_not()
-    img_mask = cv2.inRange(image, bgr_lower, bgr_upper)  # BGRからマスクを作成
-    if inverse:
-        img_mask = cv2.bitwise_not(img_mask)
-    result = cv2.bitwise_and(image, image, mask=img_mask)  # 元画像とマスクを合成
-    # print(result)
-    return result
-
-
 def counter_shadow_extraction(image):
     """
     数値の影抽出
@@ -39,10 +26,10 @@ def counter_shadow_extraction(image):
     )
     result = cv2.bitwise_not(cv2.bitwise_and(result, result, mask=img_mask))
     img_mask = cv2.bitwise_not(cv2.inRange(result, BLACK, WHITE - 1))
-    return cv2.bitwise_and(result, result, mask=img_mask)
+    return cv2.cvtColor(cv2.bitwise_and(result, result, mask=img_mask), cv2.COLOR_BGR2GRAY)
 
 
-img_bgr = cv2.imread("sonoda/num0_cloud.png")
+img_bgr = cv2.imread("sonoda/num10_cloud.png")
 # 動物の数の部分
 img_bgr = img_bgr[260:330, 0:300, :]
 
@@ -58,14 +45,14 @@ ax.axis("off")
 #     img_bgr, BACKGROUND_COLOR_DARK, WHITE, inverse=True)
 # img_bgr = cv2.bitwise_not(img_bgr)
 # img_bgr = bgr_extraction(img_bgr, BLACK, WHITE - 1, inverse=True)
-img_bgr = counter_shadow_extraction(img_bgr)
+img_gray = counter_shadow_extraction(img_bgr)
+
+
+# img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
 ax = fig.add_subplot(3, 4, 2)
-ax.imshow(img_bgr[:, :, ::-1])
+ax.imshow(img_gray, cmap="gray")
 ax.axis("off")
-
-img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
-
 idx = 3
 
 dict_digits = {}
