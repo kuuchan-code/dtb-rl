@@ -10,7 +10,7 @@ BACKGROUND_COLOR_LIGHT = BACKGROUND_COLOR + 4
 BACKGROUND_COLOR_DARK = BACKGROUND_COLOR - 4
 WHITE = np.array([255, 255, 255])
 WHITE_DARK = WHITE - 15
-BLACK = np.array([0, 0, 0])
+BLACK = np.zeros(3, dtype=int)
 
 
 def bgr_extraction(image, bgr_lower, bgr_upper, inverse=False):
