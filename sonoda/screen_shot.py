@@ -7,14 +7,9 @@ from selenium.webdriver.common.actions import interaction
 from selenium.common.exceptions import WebDriverException
 
 
-# caps = {}
-# caps["platformName"] = "android"
-# caps["appium:ensureWebviewsHavePages"] = True
-# caps["appium:nativeWebScreenshot"] = True
-# caps["appium:newCommandTimeout"] = 3600
-# caps["appium:connectHardwareKeyboard"] = True
-caps = {
+caps1 = {
     "platformName": "Android",
+    "appium:udid": "localhost:55436",
     "appium:ensureWebviewHavePages": True,
     "appium:nativeWebScreenshot": True,
     "appium:newCommandTimeout": 3600,
@@ -22,19 +17,33 @@ caps = {
 }
 try:
     # グローバル変数として定義
-    print("ドライバ接続中")
-    DRIVER = webdriver.Remote(
-        "http://localhost:4723/wd/hub", caps)
+    print("デバイス1接続中")
+    DRIVER1 = webdriver.Remote(
+        "http://localhost:4723/wd/hub", caps1)
 
-    OPERATIONS = ActionChains(DRIVER)
-    OPERATIONS.w3c_actions = ActionBuilder(
-        DRIVER, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+    OPERATIONS = ActionChains(DRIVER1)
+except WebDriverException as e:
+    print("端末に接続できない???")
+    raise e
+
+caps2 = caps1.copy()
+caps2["appium:udid"] = "CB512C5QDQ"
+print(caps1, caps2)
+
+try:
+    # グローバル変数として定義
+    print("デバイス2接続中")
+    DRIVER2 = webdriver.Remote(
+        "http://localhost:4723/wd/hub", caps2)
+
+    OPERATIONS = ActionChains(DRIVER2)
 except WebDriverException as e:
     print("端末に接続できない???")
     raise e
 
 try:
     while True:
-        DRIVER.save_screenshot(input("スクショの保存先: "))
+        DRIVER1.save_screenshot(input("デバイス1スクショの保存先: "))
+        DRIVER2.save_screenshot(input("デバイス2スクショの保存先: "))
 except KeyboardInterrupt:
     print("キーボード割り込み")
